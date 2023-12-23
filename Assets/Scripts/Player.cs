@@ -7,23 +7,19 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-
-
     private Rigidbody2D rigidbody2D;
 
-    // private List<GameObject> waypoints = new List<GameObject>(); // Define a list to hold GameObjects
-
     public float moveSpeed = 5f;
-    public Animator animator;
+    private Animator animator;
     public static Player instance;
 
     public string areaTransitionName;   // exit just used changed by AreaExit&AreaEntrance scripts
-
 
     void Start()
     {
         if (instance == null)
         {
+            animator = gameObject.GetComponent<Animator>();
             instance = this;
             GameObject mainCamera = GameObject.FindWithTag("MainCamera");
             if (mainCamera != null)
@@ -31,7 +27,6 @@ public class Player : MonoBehaviour
                 CameraFollow2D script = mainCamera.GetComponent<CameraFollow2D>();
                 script.target = instance.transform;
             }
-
         }
         else
         {
@@ -52,6 +47,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        if (animator == null) { return; }
         float moveX = Input.GetAxisRaw("Horizontal");   // Input = InputManager (edit -> project settings -> InputManager)
         float moveY = Input.GetAxisRaw("Vertical");
         animator.SetFloat("moveX", moveX);
@@ -67,8 +63,4 @@ public class Player : MonoBehaviour
         UnityEngine.Vector2 movement = new UnityEngine.Vector2(moveX, moveY).normalized;
         rigidbody2D.velocity = movement * moveSpeed;
     }
-
-
-
-
 }

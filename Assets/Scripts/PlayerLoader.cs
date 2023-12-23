@@ -5,14 +5,16 @@ using UnityEngine;
 public class PlayerLoader : MonoBehaviour
 {
 
-    public GameObject player;
+    public GameObject playerPrefab;
 
     // Start is called before the first frame update
     void Start()
     {
         if (Player.instance == null)
         {
-            Instantiate(player);
+            GameObject playerObject = Instantiate(playerPrefab);
+            playerObject.AddComponent<Player>();
+
         }
 
     }
