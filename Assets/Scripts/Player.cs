@@ -17,26 +17,26 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        if (instance == null)
+        // if (instance == null)
+        // {
+        animator = gameObject.GetComponent<Animator>();
+        // instance = this;
+        GameObject mainCamera = GameObject.FindWithTag("MainCamera");
+        if (mainCamera != null)
         {
-            animator = gameObject.GetComponent<Animator>();
-            instance = this;
-            GameObject mainCamera = GameObject.FindWithTag("MainCamera");
-            if (mainCamera != null)
-            {
-                CameraFollow2D script = mainCamera.GetComponent<CameraFollow2D>();
-                script.target = instance.transform;
-            }
+            CameraFollow2D script = mainCamera.GetComponent<CameraFollow2D>();
+            script.target = instance.transform;
         }
-        else
-        {
-            Destroy(gameObject); // Make it a singleton, so if a new object with script player is constructed, that new object is destroyed
-        }
+        // }
+        // else
+        // {
+        // Destroy(gameObject); // Make it a singleton, so if a new object with script player is constructed, that new object is destroyed
+        // }
 
         SceneManager.sceneLoaded += OnSceneLoaded; // Subscribe to the sceneLoaded event
 
         rigidbody2D = GetComponent<Rigidbody2D>();
-        DontDestroyOnLoad(gameObject);  // dont destroy object when changing scene
+        // DontDestroyOnLoad(gameObject);  // dont destroy object when changing scene
     }
 
 
