@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-
     public Transform target;
     private Rigidbody2D rigidbody2D;
     private Animator animator;
@@ -17,7 +16,9 @@ public class Enemy : MonoBehaviour
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
         animator = gameObject.GetComponent<Animator>();
-
+        // gameObject.tag = "Enemy";
+        // Debug.Log("set tag???");
+        // Debug.Log(gameObject.tag);
         SetTarget();
     }
 
@@ -38,9 +39,11 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            Vector3 difference = (target.position - gameObject.transform.position).normalized;
-            if (difference.magnitude < 5)
+            Vector3 diff = target.position - gameObject.transform.position;
+            if (diff.magnitude < 3)
             {
+                Vector3 difference = (target.position - gameObject.transform.position).normalized;
+
                 transform.position += moveSpeed * Time.deltaTime * difference;
 
                 animator.SetFloat("moveX", difference.x);

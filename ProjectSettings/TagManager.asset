@@ -7,6 +7,7 @@ TagManager:
   - MBS:Floor
   - MBS:Wall
   - Waypoint
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -46,6 +47,9 @@ TagManager:
     locked: 0
   - name: Terrain
     uniqueID: 3528608965
+    locked: 0
+  - name: Objects
+    uniqueID: 2917537683
     locked: 0
   - name: Units
     uniqueID: 2102215413

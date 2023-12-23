@@ -12,6 +12,7 @@ public class CorridorFirstMapCreator : AbstractDungeonGenerator
 
     protected override void RunProceduralGeneration()
     {
+        // ClearMap();
         HashSet<Vector2Int> floorPositions = new HashSet<Vector2Int>();
         HashSet<Vector2Int> roomPositions = new HashSet<Vector2Int>();
 
@@ -21,8 +22,6 @@ public class CorridorFirstMapCreator : AbstractDungeonGenerator
         roomPositions.UnionWith(allDeadEnds);
 
         CreateRooms(roomPositions);
-
-        CreateEnemies(roomPositions);
 
         floorPositions.UnionWith(roomPositions);
 
@@ -84,8 +83,11 @@ public class CorridorFirstMapCreator : AbstractDungeonGenerator
 
         foreach (var position in roomPositions)
         {
+
             HashSet<Vector2Int> path = CreateRoom(position);
             newPositions.UnionWith(path);
+
+
         }
 
         roomPositions.UnionWith(newPositions);
@@ -93,17 +95,20 @@ public class CorridorFirstMapCreator : AbstractDungeonGenerator
 
     private HashSet<Vector2Int> CreateRoom(Vector2Int position)
     {
-        // HashSet<Vector2Int> path = ProceduralGenerationAlgorithms.RunRandomWalk(position, 1, 15, true);
         HashSet<Vector2Int> path = ProceduralGenerationAlgorithms.CreateRoom(position);
+        if (path.Contains(new Vector2Int(0, 0)))
+        {
+            SpawnPlayer();
+        }
+        else
+        {
+            SpawnEnemies(path);
+
+        }
         return path;
     }
 
-    private void LogList(IEnumerable<Vector2Int> list)
-    {
-        foreach (var item in list)
-        {
-            Debug.Log(item);
-        }
-    }
+
+
 
 }

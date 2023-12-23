@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
 {
     private Rigidbody2D rigidbody2D;
 
-    public int moveSpeed = 4;
+    public int moveSpeed = 5;
     private Animator animator;
     public static Player instance;
 
