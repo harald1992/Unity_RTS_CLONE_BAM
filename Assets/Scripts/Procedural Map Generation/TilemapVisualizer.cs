@@ -23,7 +23,6 @@ public class TilemapVisualizer : MonoBehaviour
     {
         floorMap.ClearAllTiles();
         wallMap.ClearAllTiles();
-
     }
 
     // IEnumberable: generic form of a collection

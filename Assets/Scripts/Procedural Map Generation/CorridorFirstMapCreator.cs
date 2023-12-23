@@ -21,6 +21,9 @@ public class CorridorFirstMapCreator : AbstractDungeonGenerator
         roomPositions.UnionWith(allDeadEnds);
 
         CreateRooms(roomPositions);
+
+        CreateEnemies(roomPositions);
+
         floorPositions.UnionWith(roomPositions);
 
 
