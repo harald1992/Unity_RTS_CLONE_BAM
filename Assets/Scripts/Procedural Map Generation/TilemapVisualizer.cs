@@ -10,7 +10,10 @@ public class TilemapVisualizer : MonoBehaviour
     private Tilemap floorMap, wallMap;
 
     [SerializeField]
-    private TileBase tile, wall;
+    private TileBase tile;
+
+    [SerializeField]
+    private List<TileBase> walls;
 
     public void Clear()
     {
@@ -28,11 +31,17 @@ public class TilemapVisualizer : MonoBehaviour
         }
     }
 
+    private TileBase GetRandomWall()
+    {
+        return walls[UnityEngine.Random.Range(0, walls.Count)];
+
+    }
+
     public void PaintWalls(IEnumerable<Vector2Int> positions)
     {
         foreach (var position in positions)
         {
-            PaintSingleTile(position, wallMap, wall);
+            PaintSingleTile(position, wallMap, GetRandomWall());
         }
     }
 

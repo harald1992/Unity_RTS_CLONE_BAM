@@ -9,6 +9,8 @@ public static class WallGenerator
     public static void CreateWalls(HashSet<Vector2Int> floorPositions, TilemapVisualizer tilemapVisualizer)
     {
         var basicWallPositions = FindWallsInDirections(floorPositions, Direction2D.cardinalDirectionsList);
+        var cornerWallPositions = FindWallsInDirections(floorPositions, Direction2D.diagonalDirectionsList);
+        basicWallPositions.UnionWith(cornerWallPositions);
         tilemapVisualizer.PaintWalls(basicWallPositions);
     }
 

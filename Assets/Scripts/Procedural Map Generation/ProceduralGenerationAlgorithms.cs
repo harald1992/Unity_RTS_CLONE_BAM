@@ -87,25 +87,3 @@ public static class ProceduralGenerationAlgorithms
         return path;
     }
 }
-
-
-
-
-
-public static class Direction2D
-{
-
-    // all 4 possible directions
-    public static List<Vector2Int> cardinalDirectionsList = new()
-    {
-        new Vector2Int(0,1), // up
-        new Vector2Int(1,0), // right
-        new Vector2Int(0,-1), // down
-        new Vector2Int(-1,0), // left
-    };
-
-    public static Vector2Int GetRandomCardinalDirection()
-    {
-        return cardinalDirectionsList[Random.Range(0, cardinalDirectionsList.Count)];
-    }
-}

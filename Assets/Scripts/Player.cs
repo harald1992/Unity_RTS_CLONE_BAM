@@ -17,12 +17,11 @@ public class Player : MonoBehaviour
     public Animator animator;
     public static Player instance;
 
-    public string areaTransitionName;   // exit just used
+    public string areaTransitionName;   // exit just used changed by AreaExit&AreaEntrance scripts
 
-    // Start is called before the first frame update
+
     void Start()
     {
-
         if (instance == null)
         {
             instance = this;
@@ -49,14 +48,11 @@ public class Player : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Debug.Log("ON SCENE LOADED CALLED");
-        // WayPointInit();
     }
 
-
-    // Update is called once per frame
     void Update()
     {
-        float moveX = Input.GetAxisRaw("Horizontal");   // Input = INputManager (edit -> project settings -> InputManager)
+        float moveX = Input.GetAxisRaw("Horizontal");   // Input = InputManager (edit -> project settings -> InputManager)
         float moveY = Input.GetAxisRaw("Vertical");
         animator.SetFloat("moveX", moveX);
         animator.SetFloat("moveY", moveY);
@@ -67,10 +63,6 @@ public class Player : MonoBehaviour
             animator.SetFloat("lastMoveY", moveY);
         }
 
-        // float velX = moveX / (moveX + moveY);
-        // float velY = moveY / (moveX + moveY);
-
-        // rigidbody2D.velocity = new UnityEngine.Vector2(moveX, moveY) * moveSpeed;
         // Normalize the movement vector to ensure constant speed in all directions
         UnityEngine.Vector2 movement = new UnityEngine.Vector2(moveX, moveY).normalized;
         rigidbody2D.velocity = movement * moveSpeed;
