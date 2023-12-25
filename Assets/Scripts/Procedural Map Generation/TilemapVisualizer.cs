@@ -27,7 +27,6 @@ public class TilemapVisualizer : MonoBehaviour
         wallMap.ClearAllTiles();
     }
 
-    // IEnumberable: generic form of a collection
     public void PaintFloor(IEnumerable<Vector2Int> tilePositions)
     {
         SetRandomFloor();

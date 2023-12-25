@@ -88,6 +88,7 @@ public class Unit : MonoBehaviour
                 Debug.Log("Hit Object: " + hit.collider.gameObject.name);
                 if (hit.collider.gameObject.CompareTag("Enemy"))
                 {
+                    GameManager.instance.SpawnFloatingTextAt("20", hit.collider.gameObject.transform.position);
                     Destroy(hit.collider.gameObject);
                 }
             }

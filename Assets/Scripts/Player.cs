@@ -62,7 +62,6 @@ public class Player : MonoBehaviour
 
         if (moveX == 1 || moveX == -1 || moveY == 1 || moveY == -1)
         {
-            // Debug.Log("stop coroutine?");
             // unitScript.StopActionCoroutine();
             unitScript.animator.SetFloat("lastMoveX", moveX);
             unitScript.animator.SetFloat("lastMoveY", moveY);

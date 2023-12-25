@@ -51,8 +51,8 @@ public abstract class AbstractDungeonGenerator : MonoBehaviour
             bool spawnEnemy = Random.Range(0f, 1f) < 0.1f;
             if (amountOfEnemies < 2 && spawnEnemy)   // 10% change of a tile generating an enemy
             {
-                Vector2Int roomMiddlePosition = path.ElementAt(i);
-                Vector3 spawnPosition = new Vector3(roomMiddlePosition.x, roomMiddlePosition.y, 0);
+                Vector2Int roomPosition = path.ElementAt(i);
+                Vector3 spawnPosition = new Vector3(roomPosition.x, roomPosition.y, 0);
 
                 GameObject randomEnemyPrefab = enemyPrefabs.ElementAt(Random.Range(0, enemyPrefabs.Count));
                 float yOffset = randomEnemyPrefab.GetComponent<CircleCollider2D>().offset.y;
@@ -78,7 +78,6 @@ public abstract class AbstractDungeonGenerator : MonoBehaviour
 
             playerObject.transform.position = new Vector3(0, 0, 0);
             Player.instance = playerObject.GetComponent<Player>();
-            DontDestroyOnLoad(playerObject);  // dont destroy object when changing scene
 
             GameObject heroGate = Resources.Load<GameObject>("Prefabs/Objects/Hero_Gate");
             heroGate.transform.position = playerObject.transform.position;
@@ -94,12 +93,11 @@ public abstract class AbstractDungeonGenerator : MonoBehaviour
             bool spawnObject = Random.Range(0f, 1f) < 0.1f;
             if (spawnObject)   // 10% change of a tile generating an enemy
             {
-                Vector2Int roomMiddlePosition = path.ElementAt(i);
-                Vector3 spawnPosition = new Vector3(roomMiddlePosition.x, roomMiddlePosition.y, 0);
+                Vector2Int roomPosition = path.ElementAt(i);
+                Vector3 spawnPosition = new Vector3(roomPosition.x, roomPosition.y, 0);
 
                 GameObject randomObjectPrefab = objectPrefabs.ElementAt(Random.Range(0, objectPrefabs.Count));
                 GameObject ob = Instantiate(randomObjectPrefab, spawnPosition, Quaternion.identity);
-
             }
         }
     }

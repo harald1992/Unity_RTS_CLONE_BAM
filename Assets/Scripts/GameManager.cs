@@ -8,6 +8,11 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject floatingTextPrefab;
+
+    [SerializeField]
+    private CorridorFirstMapCreator mapGenerator;
 
     public static GameManager instance;
     private GameObject currentSelectedItem;
@@ -19,11 +24,29 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        mapGenerator = transform.Find("CorridorFirstMapCreator").GetComponent<CorridorFirstMapCreator>();
+
+        mapGenerator.GenerateDungeon();
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            SpawnFloatingTextAt("30", GetMousePosition2D());
+        }
+
         if (Input.GetMouseButtonDown(0)) // Left mouse button
         {
             // Vector3 mousePos = Input.mousePosition;
@@ -103,14 +126,14 @@ public class GameManager : MonoBehaviour
         return mousePosition;
     }
 
+    public void SpawnFloatingTextAt(string text, Vector2 position)
+    {
+        position = new Vector3(position.x, position.y, -1);
+        GameObject ob = Instantiate(floatingTextPrefab, position, Quaternion.identity);
+        TextMesh mesh = ob.GetComponent<TextMesh>();
+        mesh.text = text;
 
-    // public static void CreateSquare(Vector2 position)
-    // {
-    //     GameObject squarePrefab = Resources.Load<GameObject>("Prefabs/Particle");
-    //     GameObject squareObject = Instantiate(squarePrefab);
-    //     squareObject.transform.position = position; // Set its position
 
-    // }
-
+    }
 
 }
