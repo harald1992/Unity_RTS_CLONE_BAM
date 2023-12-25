@@ -8,7 +8,6 @@ public class Player : Unit
 {
     private Rigidbody2D rigidbody2D;
 
-    private Animator animator;
     public static Player instance;
 
     public string areaTransitionName;   // exit just used changed by AreaExit&AreaEntrance scripts
@@ -18,7 +17,6 @@ public class Player : Unit
         base.Start();
 
         gameObject.tag = "Player";
-        // animator = gameObject.GetComponent<Animator>();
         GameObject mainCamera = GameObject.FindWithTag("MainCamera");
         if (mainCamera != null)
         {
@@ -27,7 +25,6 @@ public class Player : Unit
         }
 
         SceneManager.sceneLoaded += OnSceneLoaded; // Subscribe to the sceneLoaded event
-        // rigidbody2D = GetComponent<Rigidbody2D>();
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -38,6 +35,21 @@ public class Player : Unit
     new void Update()
     {
         if (animator == null) { return; }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            AttackAnimation();
+        }
+
+
+        // if (animator.)
+        MovementOnArrowKeys();
+
+
+    }
+
+    protected void MovementOnArrowKeys()
+    {
         float moveX = Input.GetAxisRaw("Horizontal");   // Input = InputManager (edit -> project settings -> InputManager)
         float moveY = Input.GetAxisRaw("Vertical");
         animator.SetFloat("moveX", moveX);
@@ -51,4 +63,5 @@ public class Player : Unit
         Vector3 difference = new Vector3(moveX, moveY, 0).normalized;
         transform.position += moveSpeed * Time.deltaTime * difference;
     }
+
 }

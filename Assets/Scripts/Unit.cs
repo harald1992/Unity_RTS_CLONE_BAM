@@ -7,6 +7,8 @@ public class Unit : MonoBehaviour
 {
 
     protected Animator animator;
+    protected string currentState;
+
     private Rigidbody2D rigidbody2D;
     protected bool isColliding;
 
@@ -27,6 +29,31 @@ public class Unit : MonoBehaviour
     {
 
     }
+
+    public void AttackAnimation()
+    {
+        animator.SetBool("isAttacking", true);
+        // Trigger the animation
+        animator.SetTrigger("attack");
+    }
+
+    // Function to handle animation events
+    public void OnAnimationFinished()
+    {
+        // Actions to perform when the animation finishes
+        Debug.Log("Animation Finished!");
+    }
+
+    // protected void ChangeAnimationState(string newState)
+    // {
+    //     // animator.
+    //     if (currentState == newState)
+    //     {
+    //         return;
+    //     }
+    //     animator.Play(newState);
+    //     currentState = newState;
+    // }
 
     void OnCollisionStay2D(Collision2D collision)
     {
@@ -68,7 +95,7 @@ public class Unit : MonoBehaviour
 
         while (distance > 0.1f) // Adjust threshold for considering arrival
         {
-            if (isColliding) break;
+            // if (isColliding) break;
             Vector2 difference = targetPosition - transform.position;
 
             animator.SetFloat("moveX", difference.x);

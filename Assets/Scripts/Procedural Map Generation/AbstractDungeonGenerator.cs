@@ -66,7 +66,8 @@ public abstract class AbstractDungeonGenerator : MonoBehaviour
     {
         if (Player.instance == null)
         {
-            GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Units/Skeleton");
+            // GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Units/Skeleton");
+            GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Units/Knight");
             GameObject playerObject = Instantiate(playerPrefab);
             playerObject.AddComponent<Player>();
 
