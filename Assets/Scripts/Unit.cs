@@ -65,7 +65,7 @@ public class Unit : MonoBehaviour
 
     private void DamageEnemy()
     {
-        float size = 1.0f;
+        float size = 0.5f;
         Vector2 origin = new Vector2(
      transform.position.x + animator.GetFloat("lastMoveX") * size,
       transform.position.y + animator.GetFloat("lastMoveY") * size);
@@ -74,12 +74,12 @@ public class Unit : MonoBehaviour
          transform.position.x + animator.GetFloat("lastMoveX") * 1.1f * size,
           transform.position.y + animator.GetFloat("lastMoveY") * 1.1f * size);
 
-        Debug.Log(direction);
-        // Debug.Log(animator)
-        // public static RaycastHit2D BoxCast(Vector2 origin, Vector2 size, float angle, Vector2 direction, float distance)
 
-        // RaycastHit2D hit = Physics2D.Raycast(origin, destination, 2f);
-        RaycastHit2D[] hits = Physics2D.BoxCastAll(origin, new Vector2(1, 1), 0f, direction, 1f);
+        RaycastHit2D[] hits = Physics2D.BoxCastAll(origin, new Vector2(0.5f, 0.5f), 0f, direction, 0.5f);
+
+        Color color = Color.red; // Define the color of the line
+
+        Debug.DrawLine(origin, direction, color);
 
         foreach (var hit in hits)
         {

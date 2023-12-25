@@ -15,6 +15,11 @@ public abstract class AbstractDungeonGenerator : MonoBehaviour
     [SerializeField]
     protected List<GameObject> enemyPrefabs;
 
+
+    [SerializeField]
+    protected List<GameObject> objectPrefabs;
+
+
     public void GenerateDungeon()
     {
         ClearMap();
@@ -43,8 +48,8 @@ public abstract class AbstractDungeonGenerator : MonoBehaviour
         int amountOfEnemies = 0;
         for (int i = 0; i < path.Count; i++)    // skip i=0 because that is the player spawn room
         {
-            float range = Random.Range(0f, 1f);
-            if (amountOfEnemies < 2 && range < 0.1f)   // 10% change of a tile generating an enemy
+            bool spawnEnemy = Random.Range(0f, 1f) < 0.1f;
+            if (amountOfEnemies < 2 && spawnEnemy)   // 10% change of a tile generating an enemy
             {
                 Vector2Int roomMiddlePosition = path.ElementAt(i);
                 Vector3 spawnPosition = new Vector3(roomMiddlePosition.x, roomMiddlePosition.y, 0);
@@ -53,9 +58,9 @@ public abstract class AbstractDungeonGenerator : MonoBehaviour
                 float yOffset = randomEnemyPrefab.GetComponent<CircleCollider2D>().offset.y;
                 spawnPosition.y -= yOffset;
 
-                GameObject playerObject = Instantiate(randomEnemyPrefab, spawnPosition, Quaternion.identity);
-                playerObject.tag = "Enemy";
-                playerObject.AddComponent<Enemy>();
+                GameObject ob = Instantiate(randomEnemyPrefab, spawnPosition, Quaternion.identity);
+                ob.tag = "Enemy";
+                ob.AddComponent<Enemy>();
                 amountOfEnemies++;
             }
         }
@@ -78,6 +83,24 @@ public abstract class AbstractDungeonGenerator : MonoBehaviour
             GameObject heroGate = Resources.Load<GameObject>("Prefabs/Objects/Hero_Gate");
             heroGate.transform.position = playerObject.transform.position;
             Instantiate(heroGate);
+        }
+    }
+
+
+    protected void SpawnObjects(HashSet<Vector2Int> path)
+    {
+        for (int i = 0; i < path.Count; i++)    // skip i=0 because that is the player spawn room
+        {
+            bool spawnObject = Random.Range(0f, 1f) < 0.1f;
+            if (spawnObject)   // 10% change of a tile generating an enemy
+            {
+                Vector2Int roomMiddlePosition = path.ElementAt(i);
+                Vector3 spawnPosition = new Vector3(roomMiddlePosition.x, roomMiddlePosition.y, 0);
+
+                GameObject randomObjectPrefab = objectPrefabs.ElementAt(Random.Range(0, objectPrefabs.Count));
+                GameObject ob = Instantiate(randomObjectPrefab, spawnPosition, Quaternion.identity);
+
+            }
         }
     }
 

@@ -379,6 +379,8 @@ MonoBehaviour:
   enemyPrefabs:
   - {fileID: 4011096733036733146, guid: f8af26b0c7abe4491a04cae0e039e9ec, type: 3}
   - {fileID: 7718991837531746815, guid: f81510fb7f998442cacf2fa16b2a28ef, type: 3}
+  objectPrefabs:
+  - {fileID: 478179831754036397, guid: 776e98767aa96415d93239f1e4de3597, type: 3}
   corridorAmount: 5
   corridorLength: 20
   roomPercent: 0.606
@@ -431,6 +433,7 @@ MonoBehaviour:
   enemyPrefabs:
   - {fileID: 4011096733036733146, guid: f8af26b0c7abe4491a04cae0e039e9ec, type: 3}
   - {fileID: 7718991837531746815, guid: f81510fb7f998442cacf2fa16b2a28ef, type: 3}
+  objectPrefabs: []
   iterations: 50
   walkLength: 50
   startRandomlyEachIteration: 1

@@ -619,6 +619,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 308997929640372429, guid: aedd01b8893ac4853896443f4f0d0ea6, type: 3}
+      propertyPath: objectPrefabs.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 308997929640372429, guid: aedd01b8893ac4853896443f4f0d0ea6, type: 3}
+      propertyPath: objectPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 478179831754036397, guid: 776e98767aa96415d93239f1e4de3597, type: 3}
     - target: {fileID: 1640921487616149030, guid: aedd01b8893ac4853896443f4f0d0ea6, type: 3}
       propertyPath: m_Name
       value: MapGenerator

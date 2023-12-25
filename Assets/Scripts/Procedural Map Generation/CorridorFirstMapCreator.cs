@@ -103,6 +103,7 @@ public class CorridorFirstMapCreator : AbstractDungeonGenerator
         else
         {
             SpawnEnemies(path);
+            SpawnObjects(path);
 
         }
         return path;
