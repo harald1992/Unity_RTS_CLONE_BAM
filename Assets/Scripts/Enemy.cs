@@ -3,21 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : Unit
+public class Enemy : MonoBehaviour
 {
-    public Transform target;
-    // private Rigidbody2D rigidbody2D;
-    // private Animator animator;
+    private Unit unitScript;
 
+
+    public Transform target;
 
     // Start is called before the first frame update
-    protected new void Start()
+    protected void Start()
     {
-        base.Start();
-        // rigidbody2D = GetComponent<Rigidbody2D>();
-        // animator = gameObject.GetComponent<Animator>();
+        unitScript = gameObject.GetComponent<Unit>();
 
-        SetTarget();
+        unitScript.Start();
+
+        // SetTarget();
     }
 
     private void SetTarget()
@@ -29,11 +29,11 @@ public class Enemy : Unit
         }
     }
 
-    protected new void Update()
+    protected void Update()
     {
         if (target == null)
         {
-            SetTarget();
+            // SetTarget();
         }
         else
         {
@@ -42,17 +42,17 @@ public class Enemy : Unit
             {
                 Vector3 difference = (target.position - gameObject.transform.position).normalized;
 
-                transform.position += moveSpeed * Time.deltaTime * difference;
+                transform.position += unitScript.moveSpeed * Time.deltaTime * difference;
 
-                animator.SetFloat("moveX", difference.x);
-                animator.SetFloat("moveY", difference.y);
-                animator.SetFloat("lastMoveX", difference.x);
-                animator.SetFloat("lastMoveY", difference.y);
+                unitScript.animator.SetFloat("moveX", difference.x);
+                unitScript.animator.SetFloat("moveY", difference.y);
+                unitScript.animator.SetFloat("lastMoveX", difference.x);
+                unitScript.animator.SetFloat("lastMoveY", difference.y);
             }
             else
             {
-                animator.SetFloat("moveX", 0);
-                animator.SetFloat("moveY", 0);
+                unitScript.animator.SetFloat("moveX", 0);
+                unitScript.animator.SetFloat("moveY", 0);
             }
         }
 

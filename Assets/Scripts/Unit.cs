@@ -3,10 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+
 public class Unit : MonoBehaviour
 {
 
-    protected Animator animator;
+    [SerializeField]
+    protected float animationTimeAttack;
+
+    [SerializeField]
+    public float moveSpeed; // Adjust this speed as needed
+
+    public Animator animator;
     protected string currentState;
 
     private Rigidbody2D rigidbody2D;
@@ -14,46 +21,83 @@ public class Unit : MonoBehaviour
 
     Queue<Vector2> ordersQueue = new Queue<Vector2>();
 
-    private Coroutine moveCoroutine;
+    private Coroutine currentActionCoroutine;
     private Vector3 targetPosition;
-    public float moveSpeed = 4.0f; // Adjust this speed as needed
-                                   // Start is called before the first frame update
-    protected void Start()
+
+
+    // Start is called before the first frame update
+    public void Start()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
         animator = gameObject.GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    protected void Update()
+    public void StopActionCoroutine()
     {
-
+        if (currentActionCoroutine != null)
+        {
+            StopCoroutine(currentActionCoroutine);
+        }
     }
+
+    public void Attack()
+    {
+        AttackAnimation();
+    }
+
+
 
     public void AttackAnimation()
     {
+        StopActionCoroutine();
         animator.SetBool("isAttacking", true);
-        // Trigger the animation
-        animator.SetTrigger("attack");
-    }
 
-    // Function to handle animation events
-    public void OnAnimationFinished()
+        currentActionCoroutine = StartCoroutine(TransitionToIdleAfterTime(animationTimeAttack));
+
+    }
+    IEnumerator TransitionToIdleAfterTime(float time)
     {
-        // Actions to perform when the animation finishes
-        Debug.Log("Animation Finished!");
+        yield return new WaitForSeconds(time);
+        DamageEnemy();
+
+        animator.SetBool("isAttacking", false);
     }
 
-    // protected void ChangeAnimationState(string newState)
-    // {
-    //     // animator.
-    //     if (currentState == newState)
-    //     {
-    //         return;
-    //     }
-    //     animator.Play(newState);
-    //     currentState = newState;
-    // }
+    private void DamageEnemy()
+    {
+        float size = 1.0f;
+        Vector2 origin = new Vector2(
+     transform.position.x + animator.GetFloat("lastMoveX") * size,
+      transform.position.y + animator.GetFloat("lastMoveY") * size);
+
+        Vector2 direction = new Vector2(
+         transform.position.x + animator.GetFloat("lastMoveX") * 1.1f * size,
+          transform.position.y + animator.GetFloat("lastMoveY") * 1.1f * size);
+
+        Debug.Log(direction);
+        // Debug.Log(animator)
+        // public static RaycastHit2D BoxCast(Vector2 origin, Vector2 size, float angle, Vector2 direction, float distance)
+
+        // RaycastHit2D hit = Physics2D.Raycast(origin, destination, 2f);
+        RaycastHit2D[] hits = Physics2D.BoxCastAll(origin, new Vector2(1, 1), 0f, direction, 1f);
+
+        foreach (var hit in hits)
+        {
+            if (hit.collider != null)
+            {
+                Debug.Log("Hit Object: " + hit.collider.gameObject.name);
+                if (hit.collider.gameObject.CompareTag("Enemy"))
+                {
+                    Destroy(hit.collider.gameObject);
+                }
+            }
+
+
+
+        }
+    }
+
+
 
     void OnCollisionStay2D(Collision2D collision)
     {
@@ -79,14 +123,11 @@ public class Unit : MonoBehaviour
 
     public void MoveToDestination(Vector2 destination)
     {
-        if (moveCoroutine != null)
-        {
-            StopCoroutine(moveCoroutine);
-        }
+        StopActionCoroutine();
         targetPosition = destination;
         targetPosition.z = transform.position.z; // in case the destination is weird Z position from mouseclick
 
-        moveCoroutine = StartCoroutine(MoveToTarget());
+        currentActionCoroutine = StartCoroutine(MoveToTarget());
     }
 
     protected IEnumerator MoveToTarget()

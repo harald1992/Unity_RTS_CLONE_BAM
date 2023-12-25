@@ -4,17 +4,20 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Player : Unit
+public class Player : MonoBehaviour
 {
+    private Unit unitScript;
     private Rigidbody2D rigidbody2D;
 
     public static Player instance;
 
     public string areaTransitionName;   // exit just used changed by AreaExit&AreaEntrance scripts
 
-    new void Start()
+    private void Start()
     {
-        base.Start();
+        unitScript = gameObject.GetComponent<Unit>();
+
+        unitScript.Start();
 
         gameObject.tag = "Player";
         GameObject mainCamera = GameObject.FindWithTag("MainCamera");
@@ -32,18 +35,20 @@ public class Player : Unit
         Debug.Log("ON SCENE LOADED CALLED");
     }
 
-    new void Update()
+    private void Update()
     {
-        if (animator == null) { return; }
+        if (unitScript.animator == null) { return; }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            AttackAnimation();
+            unitScript.Attack();
         }
 
 
-        // if (animator.)
+        // if (!unitScript.animator.GetBool("isAttacking"))
+        // {
         MovementOnArrowKeys();
+        // }
 
 
     }
@@ -52,16 +57,18 @@ public class Player : Unit
     {
         float moveX = Input.GetAxisRaw("Horizontal");   // Input = InputManager (edit -> project settings -> InputManager)
         float moveY = Input.GetAxisRaw("Vertical");
-        animator.SetFloat("moveX", moveX);
-        animator.SetFloat("moveY", moveY);
+        unitScript.animator.SetFloat("moveX", moveX);
+        unitScript.animator.SetFloat("moveY", moveY);
 
         if (moveX == 1 || moveX == -1 || moveY == 1 || moveY == -1)
         {
-            animator.SetFloat("lastMoveX", moveX);
-            animator.SetFloat("lastMoveY", moveY);
+            // Debug.Log("stop coroutine?");
+            // unitScript.StopActionCoroutine();
+            unitScript.animator.SetFloat("lastMoveX", moveX);
+            unitScript.animator.SetFloat("lastMoveY", moveY);
         }
         Vector3 difference = new Vector3(moveX, moveY, 0).normalized;
-        transform.position += moveSpeed * Time.deltaTime * difference;
+        transform.position += unitScript.moveSpeed * Time.deltaTime * difference;
     }
 
 }
