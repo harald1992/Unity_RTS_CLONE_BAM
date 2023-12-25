@@ -19,6 +19,8 @@ public class TilemapVisualizer : MonoBehaviour
 
     private TileBase chosenWall;
 
+
+
     public void Clear()
     {
         floorMap.ClearAllTiles();

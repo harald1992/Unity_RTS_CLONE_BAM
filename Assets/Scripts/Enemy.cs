@@ -3,22 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : Unit
 {
     public Transform target;
-    private Rigidbody2D rigidbody2D;
-    private Animator animator;
+    // private Rigidbody2D rigidbody2D;
+    // private Animator animator;
 
-    public float moveSpeed = 4;
 
     // Start is called before the first frame update
-    void Start()
+    protected new void Start()
     {
-        rigidbody2D = GetComponent<Rigidbody2D>();
-        animator = gameObject.GetComponent<Animator>();
-        // gameObject.tag = "Enemy";
-        // Debug.Log("set tag???");
-        // Debug.Log(gameObject.tag);
+        base.Start();
+        // rigidbody2D = GetComponent<Rigidbody2D>();
+        // animator = gameObject.GetComponent<Animator>();
+
         SetTarget();
     }
 
@@ -31,7 +29,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void Update()
+    protected new void Update()
     {
         if (target == null)
         {

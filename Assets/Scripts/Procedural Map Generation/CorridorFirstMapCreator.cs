@@ -24,7 +24,7 @@ public class CorridorFirstMapCreator : AbstractDungeonGenerator
         CreateRooms(roomPositions);
 
         floorPositions.UnionWith(roomPositions);
-
+        GameManager.instance.floorPositions = floorPositions;
 
         tilemapVisualizer.PaintFloor(floorPositions);
 

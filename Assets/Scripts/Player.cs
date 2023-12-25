@@ -4,19 +4,21 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Player : MonoBehaviour
+public class Player : Unit
 {
     private Rigidbody2D rigidbody2D;
 
-    public int moveSpeed = 5;
     private Animator animator;
     public static Player instance;
 
     public string areaTransitionName;   // exit just used changed by AreaExit&AreaEntrance scripts
 
-    void Start()
+    new void Start()
     {
-        animator = gameObject.GetComponent<Animator>();
+        base.Start();
+
+        gameObject.tag = "Player";
+        // animator = gameObject.GetComponent<Animator>();
         GameObject mainCamera = GameObject.FindWithTag("MainCamera");
         if (mainCamera != null)
         {
@@ -24,9 +26,8 @@ public class Player : MonoBehaviour
             script.target = instance.transform;
         }
 
-
         SceneManager.sceneLoaded += OnSceneLoaded; // Subscribe to the sceneLoaded event
-        rigidbody2D = GetComponent<Rigidbody2D>();
+        // rigidbody2D = GetComponent<Rigidbody2D>();
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -34,7 +35,7 @@ public class Player : MonoBehaviour
         Debug.Log("ON SCENE LOADED CALLED");
     }
 
-    void Update()
+    new void Update()
     {
         if (animator == null) { return; }
         float moveX = Input.GetAxisRaw("Horizontal");   // Input = InputManager (edit -> project settings -> InputManager)

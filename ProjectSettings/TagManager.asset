@@ -8,6 +8,7 @@ TagManager:
   - MBS:Wall
   - Waypoint
   - Enemy
+  - Wall
   layers:
   - Default
   - TransparentFX
@@ -53,4 +54,7 @@ TagManager:
     locked: 0
   - name: Units
     uniqueID: 2102215413
+    locked: 0
+  - name: UI
+    uniqueID: 188985691
     locked: 0

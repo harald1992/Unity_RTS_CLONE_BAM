@@ -32,7 +32,6 @@ public abstract class AbstractDungeonGenerator : MonoBehaviour
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (GameObject enemy in enemies)
         {
-            Debug.Log("destroy enemy");
             Destroy(enemy);
         }
     }
@@ -48,7 +47,6 @@ public abstract class AbstractDungeonGenerator : MonoBehaviour
             if (amountOfEnemies < 2 && range < 0.1f)   // 10% change of a tile generating an enemy
             {
                 Vector2Int roomMiddlePosition = path.ElementAt(i);
-                Debug.Log(roomMiddlePosition.x + "  " + roomMiddlePosition.y);
                 Vector3 spawnPosition = new Vector3(roomMiddlePosition.x, roomMiddlePosition.y, 0);
 
                 GameObject randomEnemyPrefab = enemyPrefabs.ElementAt(Random.Range(0, enemyPrefabs.Count));
@@ -68,10 +66,10 @@ public abstract class AbstractDungeonGenerator : MonoBehaviour
     {
         if (Player.instance == null)
         {
-            GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Units/Knight");
-
+            GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Units/Skeleton");
             GameObject playerObject = Instantiate(playerPrefab);
             playerObject.AddComponent<Player>();
+
             playerObject.transform.position = new Vector3(0, 0, 0);
             Player.instance = playerObject.GetComponent<Player>();
             DontDestroyOnLoad(playerObject);  // dont destroy object when changing scene

@@ -36,21 +36,7 @@ public class EssentialsLoader : MonoBehaviour
 
     }
 
-    // private void SpawnPlayer()
-    // {
-    //     if (Player.instance == null)
-    //     {
-    //         GameObject playerObject = Instantiate(playerPrefab);
-    //         playerObject.AddComponent<Player>();
-    //         playerObject.transform.position = new Vector3(0, 0, 0);
-    //         Player.instance = playerObject.GetComponent<Player>();
-    //         DontDestroyOnLoad(playerObject);  // dont destroy object when changing scene
 
-    //         GameObject heroGate = Resources.Load<GameObject>("Prefabs/Objects/Hero_Gate");
-    //         heroGate.transform.position = playerObject.transform.position;
-    //         Instantiate(heroGate);
-    //     }
-    // }
 
     private void SpawnGameManager()
     {
