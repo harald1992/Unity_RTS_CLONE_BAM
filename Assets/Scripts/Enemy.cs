@@ -19,28 +19,34 @@ public class Enemy : MonoBehaviour
         gameObject.tag = "Enemy";
         unitScript.SetupHealthBar();
 
-        // SetTarget();
+        SetTarget();
     }
 
     private void SetTarget()
     {
-        if (Player.instance)
+        Debug.Log("Set target clled");
+        Player player = FindObjectOfType<Player>();
+        if (player)
         {
-            target = Player.instance.transform;
-            // target = FindObjectOfType<Player>().transform;
+            target = player.transform;
         }
+
     }
 
     protected void Update()
     {
         if (target == null)
         {
-            // SetTarget();
+            SetTarget();
         }
         else
         {
             Vector3 diff = target.position - gameObject.transform.position;
-            if (diff.magnitude < 3)
+            if (diff.magnitude < 1)
+            {
+                unitScript.Attack();
+            }
+            else if (diff.magnitude < 3)
             {
                 Vector3 difference = (target.position - gameObject.transform.position).normalized;
 

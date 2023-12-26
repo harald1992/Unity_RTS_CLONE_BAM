@@ -13,10 +13,16 @@ public class Unit : MonoBehaviour
 
     public float currentHp;
 
-    public float attack = 1;
+    public float attack;
+
+    // TODO: Set attack and movespeed dynamically;
+    // public float attackSpeed;
+    // animator.speed = 0.1f;
+    public float moveSpeed; // Adjust this speed as needed
+
+
     private Transform currentHpBar;
 
-    public float moveSpeed; // Adjust this speed as needed
 
     public Animator animator;
     protected string currentState;
@@ -124,7 +130,12 @@ public class Unit : MonoBehaviour
             {
                 uniqueColliders.Add(hit.collider);
                 GameObject ob = hit.collider.gameObject;
-                if (ob.CompareTag("Enemy"))
+                if (gameObject.CompareTag("Player") && ob.CompareTag("Enemy"))
+                {
+                    ObjectInstantiator.instance.InstantiateFloatingTextAt(attack.ToString(), ob.transform.position);
+                    ob.GetComponent<Unit>().ReceiveDamage(attack);
+                }
+                else if (gameObject.CompareTag("Enemy") && ob.CompareTag("Player"))
                 {
                     ObjectInstantiator.instance.InstantiateFloatingTextAt(attack.ToString(), ob.transform.position);
                     ob.GetComponent<Unit>().ReceiveDamage(attack);

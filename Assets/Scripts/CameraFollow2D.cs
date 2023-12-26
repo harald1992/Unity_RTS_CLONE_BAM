@@ -8,14 +8,7 @@ public class CameraFollow2D : MonoBehaviour
 
 
 
-    void Start()
-    {
-        if (Player.instance)
-        {
-            target = Player.instance.transform;
-            // target = FindObjectOfType<Player>().transform;
-        }
-    }
+
 
     // LateUpdate is called once per frame after Update()
     void LateUpdate()

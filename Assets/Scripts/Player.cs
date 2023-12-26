@@ -1,22 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
     private Unit unitScript;
     private Rigidbody2D rigidbody2D;
 
-    public static Player instance;
 
     public string areaTransitionName;   // exit just used changed by AreaExit&AreaEntrance scripts
 
     private void Start()
     {
         unitScript = gameObject.GetComponent<Unit>();
-        // unitScript.Start();
+        unitScript.maxHp = 25f;
+        unitScript.currentHp = 25f;
         unitScript.SetupHealthBar();
 
         gameObject.tag = "Player";
@@ -65,7 +61,6 @@ public class Player : MonoBehaviour
 
         if (moveX == 1 || moveX == -1 || moveY == 1 || moveY == -1)
         {
-            // unitScript.StopActionCoroutine();
             unitScript.animator.SetFloat("lastMoveX", moveX);
             unitScript.animator.SetFloat("lastMoveY", moveY);
 
@@ -75,6 +70,17 @@ public class Player : MonoBehaviour
         Vector3 difference = new Vector3(moveX, moveY, 0).normalized;
         transform.position += unitScript.moveSpeed * Time.deltaTime * difference;
 
+    }
+
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log("collision of player");
+        // other.gameObject
+        // if (other.CompareTag("Player"))
+        // {
+        // Player.instance.areaTransitionName = areaTransitionName;
+        // }
     }
 
 }
