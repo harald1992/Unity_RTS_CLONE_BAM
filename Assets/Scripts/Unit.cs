@@ -1,16 +1,21 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-
 public class Unit : MonoBehaviour
 {
-
     [SerializeField]
     protected float animationTimeAttack;
 
-    [SerializeField]
+    public float maxHp;
+
+    public float currentHp;
+
+    public float attack = 1;
+    private Transform currentHpBar;
+
     public float moveSpeed; // Adjust this speed as needed
 
     public Animator animator;
@@ -24,12 +29,31 @@ public class Unit : MonoBehaviour
     private Coroutine currentActionCoroutine;
     private Vector3 targetPosition;
 
-
-    // Start is called before the first frame update
     public void Start()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
         animator = gameObject.GetComponent<Animator>();
+        currentHp = maxHp;
+    }
+
+    public void ReceiveDamage(float damage)
+    {
+        currentHp -= damage;
+        currentHp = Mathf.Clamp(currentHp, 0f, maxHp); // Ensure health doesn't go below 0 or exceed maxHp
+        if (currentHp <= 0)
+        {
+            Destroy(gameObject);
+        }
+
+        float percentage = currentHp / maxHp;
+        currentHpBar.localScale = new Vector3(percentage, 1, 1);
+    }
+    public void SetupHealthBar()
+    {
+        GameObject healthBarPrefab = Resources.Load<GameObject>("Prefabs/UI/HealthBar");
+        GameObject healthOb = Instantiate(healthBarPrefab, gameObject.transform);
+        healthOb.transform.localPosition = new Vector3(0, 0.3f, 0);
+        currentHpBar = healthOb.transform.Find("CurrentHealthBar");
     }
 
     public void StopActionCoroutine()
@@ -42,20 +66,13 @@ public class Unit : MonoBehaviour
 
     public void Attack()
     {
-        AttackAnimation();
-    }
-
-
-
-    public void AttackAnimation()
-    {
-        StopActionCoroutine();
         animator.SetBool("isAttacking", true);
 
-        currentActionCoroutine = StartCoroutine(TransitionToIdleAfterTime(animationTimeAttack));
-
+        StopActionCoroutine();
+        currentActionCoroutine = StartCoroutine(DamageAndTransitionToIdle(animationTimeAttack));
     }
-    IEnumerator TransitionToIdleAfterTime(float time)
+
+    IEnumerator DamageAndTransitionToIdle(float time)
     {
         yield return new WaitForSeconds(time);
         DamageEnemy();
@@ -76,20 +93,19 @@ public class Unit : MonoBehaviour
 
 
         RaycastHit2D[] hits = Physics2D.BoxCastAll(origin, new Vector2(0.5f, 0.5f), 0f, direction, 0.5f);
-
-        Color color = Color.red; // Define the color of the line
-
-        Debug.DrawLine(origin, direction, color);
+        HashSet<Collider2D> uniqueColliders = new HashSet<Collider2D>();    // boxCastAll can hit the same object twice, maybe because I have circle and box colliders on the units
 
         foreach (var hit in hits)
         {
-            if (hit.collider != null)
+            if (hit.collider != null && !uniqueColliders.Contains(hit.collider))
             {
-                Debug.Log("Hit Object: " + hit.collider.gameObject.name);
-                if (hit.collider.gameObject.CompareTag("Enemy"))
+                uniqueColliders.Add(hit.collider);
+
+                GameObject ob = hit.collider.gameObject;
+                if (ob.CompareTag("Enemy"))
                 {
-                    ObjectInstantiator.instance.SpawnFloatingTextAt("20", hit.collider.gameObject.transform.position);
-                    Destroy(hit.collider.gameObject);
+                    ObjectInstantiator.instance.SpawnFloatingTextAt(attack.ToString(), ob.transform.position);
+                    ob.GetComponent<Unit>().ReceiveDamage(attack);
                 }
             }
         }
@@ -106,7 +122,7 @@ public class Unit : MonoBehaviour
             {
                 isColliding = true;
                 // Additional logic or actions when colliding with an object tagged as "Obstacle"
-                Debug.Log("Colliding with an obstacle!");
+                // Debug.Log("Colliding with an obstacle!");
             }
         }
     }

@@ -16,13 +16,13 @@ public class Player : MonoBehaviour
     private void Start()
     {
         unitScript = gameObject.GetComponent<Unit>();
-        unitScript.Start();
+        // unitScript.Start();
+        unitScript.SetupHealthBar();
 
         gameObject.tag = "Player";
         GameObject playerCamera = GameObject.FindWithTag("MainCamera");
         if (playerCamera != null)
         {
-            Debug.Log("Playercamera found");
             CameraFollow2D script = playerCamera.GetComponent<CameraFollow2D>();
             if (script != null)
             {
@@ -30,10 +30,7 @@ public class Player : MonoBehaviour
 
             }
         }
-        else
-        {
-            Debug.Log("No maincameraContainer found???");
-        }
+
 
     }
 

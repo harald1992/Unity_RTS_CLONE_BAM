@@ -50,7 +50,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animationTimeAttack: 0.7
+  maxHp: 5
+  currentHp: 5
+  attack: 2
   moveSpeed: 4
+  animator: {fileID: 0}
 --- !u!95 &4832434348595322725
 Animator:
   serializedVersion: 5

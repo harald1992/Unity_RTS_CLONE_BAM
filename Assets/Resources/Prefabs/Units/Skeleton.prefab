@@ -71,7 +71,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animationTimeAttack: 0.5
+  maxHp: 3
+  currentHp: 3
+  attack: 1
   moveSpeed: 4
+  animator: {fileID: 0}
 --- !u!212 &840195932123706398
 SpriteRenderer:
   m_ObjectHideFlags: 0

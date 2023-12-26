@@ -62,25 +62,16 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0)) // Left mouse button
         {
-            // Vector3 mousePos = Input.mousePosition;
-            // mousePos.z = -Camera.main.transform.position.z; // Adjusting the z coordinate
-            // Vector2 mousePosition = Camera.main.ScreenToWorldPoint(mousePos);
             Vector2 mousePosition = GetMousePosition2D();
-
             RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
 
             if (hit.collider != null)
             {
-                Debug.Log("Hit Object: " + hit.collider.gameObject.name);
-                // Debug.Log("Hit Position: " + hit.point);
+                // Debug.Log("Hit Object: " + hit.collider.gameObject.name);
                 if (hit.collider.gameObject.CompareTag("Player"))
                 {
                     currentSelectedItem = hit.collider.gameObject;
                 }
-            }
-            else
-            {
-                Debug.Log("No collision detected");
             }
         }
         else if (Input.GetMouseButtonDown(1))
@@ -91,7 +82,6 @@ public class GameManager : MonoBehaviour
             if (unitScript != null)
             {
                 // unitScript.MoveToDestination(GetMousePosition3D());
-
 
                 HashSet<Vector2> walkPath = new()
                 {

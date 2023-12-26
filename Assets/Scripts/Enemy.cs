@@ -15,8 +15,9 @@ public class Enemy : MonoBehaviour
     {
         unitScript = gameObject.GetComponent<Unit>();
 
-        unitScript.Start();
+        // unitScript.Start();
         gameObject.tag = "Enemy";
+        unitScript.SetupHealthBar();
 
         // SetTarget();
     }

@@ -16,7 +16,6 @@ public class FloatingText : MonoBehaviour
         destination = startPosition + new Vector3(0, 1, 0);
         textMesh = gameObject.GetComponent<TextMesh>();
         StartCoroutine(FadeMaterialToTargetAlpha());
-        Debug.Log(gameObject.transform.position);
         Destroy(gameObject, destroyTime);
     }
 
