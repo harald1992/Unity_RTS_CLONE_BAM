@@ -24,7 +24,6 @@ public class Enemy : MonoBehaviour
 
     private void SetTarget()
     {
-        Debug.Log("Set target clled");
         Player player = FindObjectOfType<Player>();
         if (player)
         {

@@ -5,14 +5,25 @@ public class Player : MonoBehaviour
     private Unit unitScript;
     private Rigidbody2D rigidbody2D;
 
-
+    public static Player instance;
     public string areaTransitionName;   // exit just used changed by AreaExit&AreaEntrance scripts
 
     private void Start()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         unitScript = gameObject.GetComponent<Unit>();
-        unitScript.maxHp = 25f;
-        unitScript.currentHp = 25f;
+        unitScript.maxHp = PlayerStats.instance.maxHp;
+        unitScript.currentHp = unitScript.maxHp;
+        unitScript.attack = PlayerStats.instance.attack;
+
         unitScript.SetupHealthBar();
 
         gameObject.tag = "Player";
@@ -20,21 +31,13 @@ public class Player : MonoBehaviour
         if (playerCamera != null)
         {
             CameraFollow2D script = playerCamera.GetComponent<CameraFollow2D>();
-            if (script != null)
-            {
-                script.target = transform;
-
-            }
+            script.target = transform;
         }
-
-
     }
-
-
 
     private void Update()
     {
-        unitScript.RayCast();
+        // unitScript.RayCast();
 
         if (unitScript.animator == null) { return; }
 
@@ -69,18 +72,17 @@ public class Player : MonoBehaviour
         }
         Vector3 difference = new Vector3(moveX, moveY, 0).normalized;
         transform.position += unitScript.moveSpeed * Time.deltaTime * difference;
-
     }
 
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("collision of player");
-        // other.gameObject
-        // if (other.CompareTag("Player"))
-        // {
-        // Player.instance.areaTransitionName = areaTransitionName;
-        // }
+        if (other.TryGetComponent<IInteractable>(out var interactible))
+        {
+            Debug.Log("interact");
+            interactible.Interact(gameObject);
+        }
+
     }
 
 }

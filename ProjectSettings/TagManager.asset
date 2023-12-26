@@ -9,6 +9,7 @@ TagManager:
   - Waypoint
   - Enemy
   - Wall
+  - PlayerStats
   layers:
   - Default
   - TransparentFX
