@@ -47,7 +47,7 @@ public abstract class AbstractDungeonGenerator : MonoBehaviour
         int amountOfEnemies = 0;
         for (int i = 0; i < path.Count; i++)    // skip i=0 because that is the player spawn room
         {
-            bool spawnEnemy = Random.Range(0f, 1f) < 0.1f;
+            bool spawnEnemy = Random.Range(0f, 1f) < 0.5f;
             if (amountOfEnemies < 2 && spawnEnemy)   // 10% change of a tile generating an enemy
             {
                 Vector2Int spawnPosition = path.ElementAt(i);

@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
-            ObjectInstantiator.instance.SpawnFloatingTextAt("30", GetMousePosition2D());
+            ObjectInstantiator.instance.InstantiateFloatingTextAt("30", GetMousePosition2D());
         }
 
         if (Input.GetKeyDown(KeyCode.P))

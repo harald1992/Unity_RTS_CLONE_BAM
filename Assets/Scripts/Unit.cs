@@ -24,6 +24,7 @@ public class Unit : MonoBehaviour
     private Rigidbody2D rigidbody2D;
     protected bool isColliding;
 
+    public Vector3 direction;
     Queue<Vector2> ordersQueue = new Queue<Vector2>();
 
     private Coroutine currentActionCoroutine;
@@ -35,6 +36,11 @@ public class Unit : MonoBehaviour
         animator = gameObject.GetComponent<Animator>();
         currentHp = maxHp;
     }
+
+    // private void Update()
+    // {
+    //     DamageEnemy();
+    // }
 
     public void ReceiveDamage(float damage)
     {
@@ -66,6 +72,12 @@ public class Unit : MonoBehaviour
 
     public void Attack()
     {
+
+        if (animator.GetBool("isAttacking") == true)
+        {
+            // if already attacking, don't attack again.
+            return;
+        }
         animator.SetBool("isAttacking", true);
 
         StopActionCoroutine();
@@ -80,19 +92,30 @@ public class Unit : MonoBehaviour
         animator.SetBool("isAttacking", false);
     }
 
-    private void DamageEnemy()
+    public void RayCast()
     {
         float size = 0.5f;
-        Vector2 origin = new Vector2(
-     transform.position.x + animator.GetFloat("lastMoveX") * size,
-      transform.position.y + animator.GetFloat("lastMoveY") * size);
 
-        Vector2 direction = new Vector2(
-         transform.position.x + animator.GetFloat("lastMoveX") * 1.1f * size,
-          transform.position.y + animator.GetFloat("lastMoveY") * 1.1f * size);
+        Vector3 direction = new Vector3(
+               animator.GetFloat("lastMoveX"),
+               animator.GetFloat("lastMoveY"),
+                 0).normalized * size;
 
+        Ray ray = new Ray(transform.position, direction);
+        Debug.DrawRay(ray.origin, ray.direction, Color.white);
+    }
 
-        RaycastHit2D[] hits = Physics2D.BoxCastAll(origin, new Vector2(0.5f, 0.5f), 0f, direction, 0.5f);
+    public void DamageEnemy()
+    {
+        float size = 0.5f;
+
+        Vector3 direction = new Vector3(
+        animator.GetFloat("lastMoveX"),
+        animator.GetFloat("lastMoveY"),
+          0).normalized * size;
+
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, size);
+        // RaycastHit2D[] hits = Physics2D.BoxCastAll(origin, new Vector2(0.1f, 0.1f), 0f, direction, 0.5f);
         HashSet<Collider2D> uniqueColliders = new HashSet<Collider2D>();    // boxCastAll can hit the same object twice, maybe because I have circle and box colliders on the units
 
         foreach (var hit in hits)
@@ -100,14 +123,14 @@ public class Unit : MonoBehaviour
             if (hit.collider != null && !uniqueColliders.Contains(hit.collider))
             {
                 uniqueColliders.Add(hit.collider);
-
                 GameObject ob = hit.collider.gameObject;
                 if (ob.CompareTag("Enemy"))
                 {
-                    ObjectInstantiator.instance.SpawnFloatingTextAt(attack.ToString(), ob.transform.position);
+                    ObjectInstantiator.instance.InstantiateFloatingTextAt(attack.ToString(), ob.transform.position);
                     ob.GetComponent<Unit>().ReceiveDamage(attack);
                 }
             }
+
         }
     }
 

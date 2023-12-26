@@ -56,7 +56,7 @@ public class ObjectInstantiator : MonoBehaviour
     }
 
 
-    public void SpawnFloatingTextAt(string text, Vector2 position)
+    public void InstantiateFloatingTextAt(string text, Vector2 position)
     {
         GameObject floatingTextPrefab = Resources.Load<GameObject>("Prefabs/UI/FloatingText");
 

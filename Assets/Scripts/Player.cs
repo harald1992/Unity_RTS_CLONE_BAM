@@ -38,6 +38,8 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        unitScript.RayCast();
+
         if (unitScript.animator == null) { return; }
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -66,9 +68,13 @@ public class Player : MonoBehaviour
             // unitScript.StopActionCoroutine();
             unitScript.animator.SetFloat("lastMoveX", moveX);
             unitScript.animator.SetFloat("lastMoveY", moveY);
+
+            // set new direction the character is facing for raycast stuff  
+            Vector3 diff = new Vector3(moveX, moveY, 0).normalized;
         }
         Vector3 difference = new Vector3(moveX, moveY, 0).normalized;
         transform.position += unitScript.moveSpeed * Time.deltaTime * difference;
+
     }
 
 }
