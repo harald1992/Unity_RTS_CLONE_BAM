@@ -16,24 +16,28 @@ public class Player : MonoBehaviour
     private void Start()
     {
         unitScript = gameObject.GetComponent<Unit>();
-
         unitScript.Start();
 
         gameObject.tag = "Player";
-        GameObject mainCamera = GameObject.FindWithTag("MainCamera");
-        if (mainCamera != null)
+        GameObject playerCamera = GameObject.FindWithTag("MainCamera");
+        if (playerCamera != null)
         {
-            CameraFollow2D script = mainCamera.GetComponent<CameraFollow2D>();
-            script.target = instance.transform;
+            Debug.Log("Playercamera found");
+            CameraFollow2D script = playerCamera.GetComponent<CameraFollow2D>();
+            if (script != null)
+            {
+                script.target = transform;
+
+            }
+        }
+        else
+        {
+            Debug.Log("No maincameraContainer found???");
         }
 
-        SceneManager.sceneLoaded += OnSceneLoaded; // Subscribe to the sceneLoaded event
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        Debug.Log("ON SCENE LOADED CALLED");
-    }
+
 
     private void Update()
     {

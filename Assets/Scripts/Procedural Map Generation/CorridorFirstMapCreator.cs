@@ -5,14 +5,28 @@ using UnityEngine;
 
 public class CorridorFirstMapCreator : AbstractDungeonGenerator
 {
-    public int corridorAmount = 5, corridorLength = 10;
+    public int corridorAmount = 5, corridorLength = 10, roomSize = 3;
 
     [Range(0.1f, 1)]
     public float roomPercent = 0.3f;
 
+    // protected override void RunProceduralGeneration()
+    // {
+    //     ClearMap();
+    //     HashSet<Vector2Int> floorPositions = new HashSet<Vector2Int>();
+    //     HashSet<Vector2Int> roomPositions = new HashSet<Vector2Int>();
+    //     CorridorMapWalk(floorPositions, roomPositions);
+    //     // List<Vector2Int> allDeadEnds = FindAllDeadEnds(floorPositions);
+    //     // roomPositions.UnionWith(allDeadEnds);
+    //     CreateRooms(roomPositions);
+
+    //     tilemapVisualizer.PaintFloor(floorPositions);
+    // }
+
+
     protected override void RunProceduralGeneration()
     {
-        // ClearMap();
+        ClearMap();
         HashSet<Vector2Int> floorPositions = new HashSet<Vector2Int>();
         HashSet<Vector2Int> roomPositions = new HashSet<Vector2Int>();
 
@@ -83,11 +97,8 @@ public class CorridorFirstMapCreator : AbstractDungeonGenerator
 
         foreach (var position in roomPositions)
         {
-
             HashSet<Vector2Int> path = CreateRoom(position);
             newPositions.UnionWith(path);
-
-
         }
 
         roomPositions.UnionWith(newPositions);
@@ -95,10 +106,16 @@ public class CorridorFirstMapCreator : AbstractDungeonGenerator
 
     private HashSet<Vector2Int> CreateRoom(Vector2Int position)
     {
-        HashSet<Vector2Int> path = ProceduralGenerationAlgorithms.CreateRoom(position);
+        int xMax = Random.Range(1, 1);
+        int yMax = Random.Range(1, 1);
+        HashSet<Vector2Int> path = ProceduralGenerationAlgorithms.CreateRoom(position, xMax, yMax);
         if (path.Contains(new Vector2Int(0, 0)))
         {
-            SpawnPlayer(path.ElementAt(0));
+            GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Units/Knight");
+            ObjectInstantiator.instance.InstantiatePlayer(playerPrefab, path.ElementAt(0));
+
+            GameObject heroGate = Resources.Load<GameObject>("Prefabs/Objects/Hero_Gate");
+            ObjectInstantiator.instance.InstantiateObject(heroGate, path.ElementAt(0));
         }
         else
         {

@@ -5,6 +5,7 @@ using System.Linq;
 
 // using System.Numerics;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -35,6 +36,7 @@ public class GameManager : MonoBehaviour
         mapGenerator = transform.Find("CorridorFirstMapCreator").GetComponent<CorridorFirstMapCreator>();
 
         mapGenerator.GenerateDungeon();
+        SceneManager.sceneLoaded += OnSceneLoaded; // Subscribe to the sceneLoaded event
 
     }
 
@@ -43,7 +45,19 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
-            SpawnFloatingTextAt("30", GetMousePosition2D());
+            ObjectInstantiator.instance.SpawnFloatingTextAt("30", GetMousePosition2D());
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            GameObject knightPrefab = Resources.Load<GameObject>("Prefabs/Units/Knight");
+            ObjectInstantiator.instance.InstantiatePlayer(knightPrefab, GetMousePosition2D());
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            GameObject knightPrefab = Resources.Load<GameObject>("Prefabs/Units/Skeleton");
+            ObjectInstantiator.instance.InstantiateEnemy(knightPrefab, GetMousePosition2D());
         }
 
         if (Input.GetMouseButtonDown(0)) // Left mouse button
@@ -113,6 +127,7 @@ public class GameManager : MonoBehaviour
     {
         Vector3 mousePos = Input.mousePosition;
         mousePos.z = -Camera.main.transform.position.z; // Adjusting the z coordinate
+        // mousePos.z = 0;
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(mousePos);
         return mousePosition;
     }
@@ -121,18 +136,14 @@ public class GameManager : MonoBehaviour
     {
         Vector3 mousePos = Input.mousePosition;
         mousePos.z = -Camera.main.transform.position.z; // Adjusting the z coordinate
+        // mousePos.z = 0;
+
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(mousePos);
         return mousePosition;
     }
 
-    public void SpawnFloatingTextAt(string text, Vector2 position)
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        position = new Vector3(position.x, position.y, 0);
-        GameObject ob = Instantiate(floatingTextPrefab, position, Quaternion.identity);
-        TextMesh mesh = ob.GetComponent<TextMesh>();
-        mesh.text = text;
-
-
+        Debug.Log("ON SCENE LOADED CALLED");
     }
-
 }

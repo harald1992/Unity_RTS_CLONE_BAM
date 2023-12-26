@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38d5ffab41ef84701b8e2d8ac15cf063, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyTime: 100
+  destroyTime: 1
   speed: 0.5
 --- !u!23 &963859719633112458
 MeshRenderer:

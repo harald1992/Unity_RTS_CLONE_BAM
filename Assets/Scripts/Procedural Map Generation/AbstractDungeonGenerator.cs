@@ -15,7 +15,6 @@ public abstract class AbstractDungeonGenerator : MonoBehaviour
     [SerializeField]
     protected List<GameObject> enemyPrefabs;
 
-
     [SerializeField]
     protected List<GameObject> objectPrefabs;
 
@@ -51,41 +50,13 @@ public abstract class AbstractDungeonGenerator : MonoBehaviour
             bool spawnEnemy = Random.Range(0f, 1f) < 0.1f;
             if (amountOfEnemies < 2 && spawnEnemy)   // 10% change of a tile generating an enemy
             {
-                Vector2Int roomPosition = path.ElementAt(i);
-                Vector3 spawnPosition = new Vector3(roomPosition.x, roomPosition.y, 0);
-
+                Vector2Int spawnPosition = path.ElementAt(i);
                 GameObject randomEnemyPrefab = enemyPrefabs.ElementAt(Random.Range(0, enemyPrefabs.Count));
-                float yOffset = randomEnemyPrefab.GetComponent<CircleCollider2D>().offset.y;
-                spawnPosition.y -= yOffset;
-
-                GameObject ob = Instantiate(randomEnemyPrefab, spawnPosition, Quaternion.identity);
-                ob.tag = "Enemy";
-                ob.AddComponent<Enemy>();
+                GameObject ob = ObjectInstantiator.instance.InstantiateEnemy(randomEnemyPrefab, spawnPosition);
                 amountOfEnemies++;
             }
         }
     }
-
-
-    protected void SpawnPlayer(Vector2Int position)
-    {
-        if (Player.instance == null)
-        {
-            // GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Units/Skeleton");
-            GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Units/Knight");
-            GameObject playerObject = Instantiate(playerPrefab);
-            playerObject.AddComponent<Player>();
-
-            // playerObject.transform.position = new Vector3(position.x, position.y - 0.5f, 0);
-            playerObject.transform.position = new Vector3(position.x, position.y, 0);
-            Player.instance = playerObject.GetComponent<Player>();
-
-            GameObject heroGate = Resources.Load<GameObject>("Prefabs/Objects/Hero_Gate");
-            heroGate.transform.position = playerObject.transform.position;
-            Instantiate(heroGate);
-        }
-    }
-
 
     protected void SpawnObjects(HashSet<Vector2Int> path)
     {
@@ -95,10 +66,10 @@ public abstract class AbstractDungeonGenerator : MonoBehaviour
             if (spawnObject)   // 10% change of a tile generating an enemy
             {
                 Vector2Int roomPosition = path.ElementAt(i);
-                Vector3 spawnPosition = new Vector3(roomPosition.x + 0.5f, roomPosition.y - 0.5f, 0);
+                Vector3 spawnPosition = new Vector3(roomPosition.x, roomPosition.y, 0);
 
                 GameObject randomObjectPrefab = objectPrefabs.ElementAt(Random.Range(0, objectPrefabs.Count));
-                GameObject ob = Instantiate(randomObjectPrefab, spawnPosition, Quaternion.identity);
+                ObjectInstantiator.instance.InstantiateObject(randomObjectPrefab, spawnPosition);
             }
         }
     }

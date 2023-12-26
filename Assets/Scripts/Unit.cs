@@ -88,13 +88,10 @@ public class Unit : MonoBehaviour
                 Debug.Log("Hit Object: " + hit.collider.gameObject.name);
                 if (hit.collider.gameObject.CompareTag("Enemy"))
                 {
-                    GameManager.instance.SpawnFloatingTextAt("20", hit.collider.gameObject.transform.position);
+                    ObjectInstantiator.instance.SpawnFloatingTextAt("20", hit.collider.gameObject.transform.position);
                     Destroy(hit.collider.gameObject);
                 }
             }
-
-
-
         }
     }
 
@@ -117,9 +114,7 @@ public class Unit : MonoBehaviour
     public void MoveToDestinationInSteps(HashSet<Vector2> path)
     {
         ordersQueue = new Queue<Vector2>(path);
-
         MoveToDestination(ordersQueue.ElementAt(0));
-
     }
 
     public void MoveToDestination(Vector2 destination)

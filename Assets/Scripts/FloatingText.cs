@@ -24,19 +24,7 @@ public class FloatingText : MonoBehaviour
     void Update()
     {
         transform.position = Vector3.MoveTowards(transform.position, destination, speed * Time.deltaTime);
-
-
     }
-
-    // void ChangeTextOpacityValue(float alphaValue)
-    // {
-    //     if (textMesh != null)
-    //     {
-    //         Color textColor = textMesh.color;
-    //         textColor.a = alphaValue;
-    //         textMesh.color = textColor;
-    //     }
-    // }
 
     IEnumerator FadeMaterialToTargetAlpha()
     {
