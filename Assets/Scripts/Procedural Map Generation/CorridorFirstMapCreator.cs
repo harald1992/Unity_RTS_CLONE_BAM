@@ -66,8 +66,8 @@ public class CorridorFirstMapCreator : AbstractDungeonGenerator
             HashSet<Vector2Int> path = ProceduralGenerationAlgorithms.WalkRandomCorridor(currentPosition, corridorLength);
             currentPosition = path.ElementAt(path.Count - 1);
 
-            float range = Random.Range(0f, 1f);
-            if (range < roomPercent)
+            bool isCreateRoom = Random.Range(0f, 1f) < roomPercent;
+            if (isCreateRoom)
             {
                 roomPositions.Add(currentPosition);
             }
@@ -98,7 +98,7 @@ public class CorridorFirstMapCreator : AbstractDungeonGenerator
         HashSet<Vector2Int> path = ProceduralGenerationAlgorithms.CreateRoom(position);
         if (path.Contains(new Vector2Int(0, 0)))
         {
-            SpawnPlayer();
+            SpawnPlayer(path.ElementAt(0));
         }
         else
         {

@@ -71,8 +71,8 @@ public static class ProceduralGenerationAlgorithms
 
     public static HashSet<Vector2Int> CreateRoom(Vector2Int currentPosition)
     {
-        int xMax = Random.Range(4, 8);
-        int yMax = Random.Range(4, 8);
+        int xMax = Random.Range(1, 1);
+        int yMax = Random.Range(1, 1);
 
         HashSet<Vector2Int> path = new HashSet<Vector2Int>();
         for (int x = -1; x <= xMax; x++)

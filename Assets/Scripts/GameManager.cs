@@ -11,7 +11,6 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject floatingTextPrefab;
 
-    [SerializeField]
     private CorridorFirstMapCreator mapGenerator;
 
     public static GameManager instance;
@@ -128,7 +127,7 @@ public class GameManager : MonoBehaviour
 
     public void SpawnFloatingTextAt(string text, Vector2 position)
     {
-        position = new Vector3(position.x, position.y, -1);
+        position = new Vector3(position.x, position.y, 0);
         GameObject ob = Instantiate(floatingTextPrefab, position, Quaternion.identity);
         TextMesh mesh = ob.GetComponent<TextMesh>();
         mesh.text = text;

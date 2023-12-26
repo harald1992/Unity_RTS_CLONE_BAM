@@ -6,7 +6,9 @@ public class CameraFollow2D : MonoBehaviour
                              // public float smoothSpeed = 0.125f; // Adjust this value to set the smoothness of the camera follow
                              // public Vector3 offset = new Vector3(0, 0, -10); // Offset of the camera from the player
 
-    void Awake()
+
+
+    void Start()
     {
         if (Player.instance)
         {

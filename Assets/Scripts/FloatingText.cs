@@ -6,24 +6,24 @@ public class FloatingText : MonoBehaviour
     public float destroyTime = 0.5f;
     public float speed = 0.5f;
 
-    Vector2 startPosition;
-    Vector2 destination;
+    Vector3 startPosition;
+    Vector3 destination;
     TextMesh textMesh;
 
     void Start()
     {
         startPosition = gameObject.transform.position;
-        destination = startPosition + new Vector2(0, 1);
+        destination = startPosition + new Vector3(0, 1, 0);
         textMesh = gameObject.GetComponent<TextMesh>();
         StartCoroutine(FadeMaterialToTargetAlpha());
-
+        Debug.Log(gameObject.transform.position);
         Destroy(gameObject, destroyTime);
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position = Vector2.MoveTowards(transform.position, destination, speed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, destination, speed * Time.deltaTime);
 
 
     }
