@@ -19,7 +19,9 @@ public class TilemapVisualizer : MonoBehaviour
 
     private TileBase chosenWall;
 
-
+    [SerializeField]
+    private List<TileBase> roomTiles;
+    private TileBase chosenRoom;
 
     public void Clear()
     {
@@ -62,5 +64,19 @@ public class TilemapVisualizer : MonoBehaviour
     {
         var tilePosition = tileMap.WorldToCell((Vector3Int)position);
         tileMap.SetTile(tilePosition, tileType);
+    }
+
+    public void PaintRooms(HashSet<Vector2Int> roomPositions)
+    {
+        SetRandomRoom();
+        foreach (var position in roomPositions)
+        {
+            PaintSingleTile(position, floorMap, chosenRoom);
+        }
+    }
+
+    private void SetRandomRoom()
+    {
+        chosenRoom = roomTiles[UnityEngine.Random.Range(0, roomTiles.Count)];
     }
 }

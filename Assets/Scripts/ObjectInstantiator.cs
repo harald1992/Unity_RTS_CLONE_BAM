@@ -38,6 +38,7 @@ public class ObjectInstantiator : MonoBehaviour
     {
         GameObject ob = InstantiateUnit(objectPrefab, position);
         ob.AddComponent<Player>();
+        ob.name = "Player";
         return ob;
     }
 
@@ -56,7 +57,7 @@ public class ObjectInstantiator : MonoBehaviour
     }
 
 
-    public void InstantiateFloatingTextAt(string text, Vector2 position)
+    public void InstantiateFloatingTextAt(string text, Vector2 position, Color color)
     {
         GameObject floatingTextPrefab = Resources.Load<GameObject>("Prefabs/UI/FloatingText");
 
@@ -64,6 +65,10 @@ public class ObjectInstantiator : MonoBehaviour
         GameObject ob = Instantiate(floatingTextPrefab, position, Quaternion.identity);
         TextMesh mesh = ob.GetComponent<TextMesh>();
         mesh.text = text;
+        mesh.color = color;
+
+
+
     }
 
 
@@ -83,4 +88,6 @@ public class ObjectInstantiator : MonoBehaviour
         }
         return totalOffset;
     }
+
+
 }

@@ -380,7 +380,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0.672
+  m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -486,6 +486,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58dac5268695e444b924d2a4d9f4bb0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  goldObject: {fileID: 1314556774}
+  healthBarObject: {fileID: 584396406}
   maxHp: 25
   currentHp: 25
   attack: 2
@@ -835,38 +837,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4367615230122458037, guid: e9d4d04cbf12f4f45995fecd931dff13, type: 3}
-      propertyPath: corridorAmount
-      value: 6
+    - target: {fileID: 3896398771756469556, guid: e9d4d04cbf12f4f45995fecd931dff13, type: 3}
+      propertyPath: tiles.Array.size
+      value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 4367615230122458037, guid: e9d4d04cbf12f4f45995fecd931dff13, type: 3}
-      propertyPath: corridorLength
-      value: 8
+    - target: {fileID: 3896398771756469556, guid: e9d4d04cbf12f4f45995fecd931dff13, type: 3}
+      propertyPath: walls.Array.size
+      value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 4367615230122458037, guid: e9d4d04cbf12f4f45995fecd931dff13, type: 3}
-      propertyPath: objectPrefabs.Array.size
-      value: 6
+    - target: {fileID: 3896398771756469556, guid: e9d4d04cbf12f4f45995fecd931dff13, type: 3}
+      propertyPath: tiles.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 208b86f7c154b47ac8738dddd23ee61e, type: 2}
+    - target: {fileID: 3896398771756469556, guid: e9d4d04cbf12f4f45995fecd931dff13, type: 3}
+      propertyPath: walls.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 5e14d1887832542d2a4d3aadc66635bf, type: 2}
+    - target: {fileID: 3896398771756469556, guid: e9d4d04cbf12f4f45995fecd931dff13, type: 3}
+      propertyPath: roomTiles.Array.size
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4367615230122458037, guid: e9d4d04cbf12f4f45995fecd931dff13, type: 3}
-      propertyPath: objectPrefabs.Array.data[1]
+    - target: {fileID: 3896398771756469556, guid: e9d4d04cbf12f4f45995fecd931dff13, type: 3}
+      propertyPath: roomTiles.Array.data[0]
       value: 
-      objectReference: {fileID: 268351392265824913, guid: c16573661937a4f229de4cd75ffadaa4, type: 3}
-    - target: {fileID: 4367615230122458037, guid: e9d4d04cbf12f4f45995fecd931dff13, type: 3}
-      propertyPath: objectPrefabs.Array.data[2]
-      value: 
-      objectReference: {fileID: 2649638377956853738, guid: a0dde75d2119847d485e32ff863dfd11, type: 3}
-    - target: {fileID: 4367615230122458037, guid: e9d4d04cbf12f4f45995fecd931dff13, type: 3}
-      propertyPath: objectPrefabs.Array.data[3]
-      value: 
-      objectReference: {fileID: 7177261134616020397, guid: 6389b2bda238247afa013852f68de9ef, type: 3}
-    - target: {fileID: 4367615230122458037, guid: e9d4d04cbf12f4f45995fecd931dff13, type: 3}
-      propertyPath: objectPrefabs.Array.data[4]
-      value: 
-      objectReference: {fileID: 3304960321553416453, guid: 488f441e30f3d448db5e05a75039e6cc, type: 3}
-    - target: {fileID: 4367615230122458037, guid: e9d4d04cbf12f4f45995fecd931dff13, type: 3}
-      propertyPath: objectPrefabs.Array.data[5]
-      value: 
-      objectReference: {fileID: 7053580511086829590, guid: 189e87d141a5749c9854349ed61baef2, type: 3}
+      objectReference: {fileID: 11400000, guid: 91e04e776996748f2802289c65829d6a, type: 2}
     - target: {fileID: 5430097099849443286, guid: e9d4d04cbf12f4f45995fecd931dff13, type: 3}
       propertyPath: m_Name
       value: GameManager
@@ -909,10 +903,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5444409850368585491, guid: e9d4d04cbf12f4f45995fecd931dff13, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7458975898196379990, guid: e9d4d04cbf12f4f45995fecd931dff13, type: 3}
-      propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

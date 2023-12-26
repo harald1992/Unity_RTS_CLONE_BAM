@@ -43,22 +43,22 @@ public class Unit : MonoBehaviour
         currentHp = maxHp;
     }
 
-    // private void Update()
-    // {
-    //     DamageEnemy();
-    // }
+    private void Update()
+    {
+        RayCast();
+    }
 
     public void ReceiveDamage(float damage)
     {
         currentHp -= damage;
         currentHp = Mathf.Clamp(currentHp, 0f, maxHp); // Ensure health doesn't go below 0 or exceed maxHp
+        float percentage = currentHp / maxHp;
+        currentHpBar.localScale = new Vector3(percentage, 1, 1);
+
         if (currentHp <= 0)
         {
             Destroy(gameObject);
         }
-
-        float percentage = currentHp / maxHp;
-        currentHpBar.localScale = new Vector3(percentage, 1, 1);
     }
     public void SetupHealthBar()
     {
@@ -96,6 +96,8 @@ public class Unit : MonoBehaviour
         DamageEnemy();
 
         animator.SetBool("isAttacking", false);
+        animator.SetFloat("moveX", 0);
+        animator.SetFloat("moveY", 0);
     }
 
     public void RayCast()
@@ -120,7 +122,9 @@ public class Unit : MonoBehaviour
         animator.GetFloat("lastMoveY"),
           0).normalized * size;
 
-        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, size);
+        // RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, size);
+        RaycastHit2D[] hits = Physics2D.BoxCastAll(transform.position, new Vector2(0.25f, 0.25f), 0, direction, size);
+
         // RaycastHit2D[] hits = Physics2D.BoxCastAll(origin, new Vector2(0.1f, 0.1f), 0f, direction, 0.5f);
         HashSet<Collider2D> uniqueColliders = new HashSet<Collider2D>();    // boxCastAll can hit the same object twice, maybe because I have circle and box colliders on the units
 
@@ -129,16 +133,18 @@ public class Unit : MonoBehaviour
             if (hit.collider != null && !uniqueColliders.Contains(hit.collider))
             {
                 uniqueColliders.Add(hit.collider);
-                GameObject ob = hit.collider.gameObject;
-                if (gameObject.CompareTag("Player") && ob.CompareTag("Enemy"))
+                GameObject other = hit.collider.gameObject;
+                if (gameObject.CompareTag("Player") && other.CompareTag("Enemy"))
                 {
-                    ObjectInstantiator.instance.InstantiateFloatingTextAt(attack.ToString(), ob.transform.position);
-                    ob.GetComponent<Unit>().ReceiveDamage(attack);
+                    ObjectInstantiator.instance.InstantiateFloatingTextAt(attack.ToString(), other.transform.position, Color.red);
+                    other.GetComponent<Unit>().ReceiveDamage(attack);
                 }
-                else if (gameObject.CompareTag("Enemy") && ob.CompareTag("Player"))
+                else if (gameObject.CompareTag("Enemy") && other.CompareTag("Player"))
                 {
-                    ObjectInstantiator.instance.InstantiateFloatingTextAt(attack.ToString(), ob.transform.position);
-                    ob.GetComponent<Unit>().ReceiveDamage(attack);
+                    ObjectInstantiator.instance.InstantiateFloatingTextAt(attack.ToString(), other.transform.position, Color.red);
+                    Unit player = other.GetComponent<Unit>();
+                    player.ReceiveDamage(attack);
+                    PlayerStats.instance.ReceiveDamage(attack);
                 }
             }
 
@@ -182,7 +188,6 @@ public class Unit : MonoBehaviour
 
         while (distance > 0.1f) // Adjust threshold for considering arrival
         {
-            // if (isColliding) break;
             Vector2 difference = targetPosition - transform.position;
 
             animator.SetFloat("moveX", difference.x);

@@ -14,8 +14,6 @@ public class Enemy : MonoBehaviour
     protected void Start()
     {
         unitScript = gameObject.GetComponent<Unit>();
-
-        // unitScript.Start();
         gameObject.tag = "Enemy";
         unitScript.SetupHealthBar();
 
@@ -24,16 +22,15 @@ public class Enemy : MonoBehaviour
 
     private void SetTarget()
     {
-        Player player = FindObjectOfType<Player>();
-        if (player)
+        if (target == null)
         {
-            target = player.transform;
+            target = FindObjectOfType<Player>()?.transform; // Attempt to find a new target
         }
-
     }
 
     protected void Update()
     {
+
         if (target == null)
         {
             SetTarget();

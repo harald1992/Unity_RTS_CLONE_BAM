@@ -10,20 +10,6 @@ public class CorridorFirstMapCreator : AbstractDungeonGenerator
     [Range(0.1f, 1)]
     public float roomPercent = 0.3f;
 
-    // protected override void RunProceduralGeneration()
-    // {
-    //     ClearMap();
-    //     HashSet<Vector2Int> floorPositions = new HashSet<Vector2Int>();
-    //     HashSet<Vector2Int> roomPositions = new HashSet<Vector2Int>();
-    //     CorridorMapWalk(floorPositions, roomPositions);
-    //     // List<Vector2Int> allDeadEnds = FindAllDeadEnds(floorPositions);
-    //     // roomPositions.UnionWith(allDeadEnds);
-    //     CreateRooms(roomPositions);
-
-    //     tilemapVisualizer.PaintFloor(floorPositions);
-    // }
-
-
     protected override void RunProceduralGeneration()
     {
         ClearMap();
@@ -37,11 +23,13 @@ public class CorridorFirstMapCreator : AbstractDungeonGenerator
 
         CreateRooms(roomPositions);
 
-        floorPositions.UnionWith(roomPositions);
         GameManager.instance.floorPositions = floorPositions;
 
         tilemapVisualizer.PaintFloor(floorPositions);
 
+        tilemapVisualizer.PaintRooms(roomPositions);
+
+        floorPositions.UnionWith(roomPositions);
         WallGenerator.CreateWalls(floorPositions, tilemapVisualizer);
     }
 
