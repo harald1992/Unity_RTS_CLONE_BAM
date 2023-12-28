@@ -2,29 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using System;
+using Unity.VisualScripting;
 
 public class PlayerStats : MonoBehaviour
 {
     public static PlayerStats instance;
 
-    public GameObject goldObject;
-    private Text goldTextUI;
+    [SerializeField]
+    private Image healthBarAmountImage;
 
-    public GameObject healthBarObject;
-    private Image healthBarAmount;
+    [SerializeField]
+    private TextMeshProUGUI attackTextUI;
 
-    private int gold = 0;
+    [SerializeField]
+    private TextMeshProUGUI goldTextUI;
 
     public float maxHp = 25f;
     public float currentHp = 25f;
 
-    public float attack = 2;
-    // public float defence = 2f;
+    public float attack = 2f;
+
+    private int gold = 0;
 
     public void UpdateUI()
     {
-        goldTextUI.text = "Gold: " + gold.ToString();
-        healthBarAmount.fillAmount = currentHp / maxHp;
+        attackTextUI.text = attack.ToString();
+
+        healthBarAmountImage.fillAmount = currentHp / maxHp;
+        goldTextUI.text = gold.ToString();
     }
 
     void Start()
@@ -38,14 +45,7 @@ public class PlayerStats : MonoBehaviour
             Destroy(gameObject);
         }
 
-        // Transform goldObject = gameObject.transform.Find("Gold");
-
-        goldTextUI = goldObject.gameObject.GetComponent<Text>();
-
-
-        healthBarAmount = healthBarObject.GetComponent<Image>();
-
-
+        UpdateUI();
     }
 
     public void IncreaseGold(int goldAmount)
