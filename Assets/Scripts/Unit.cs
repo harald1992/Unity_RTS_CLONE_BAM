@@ -13,6 +13,10 @@ public class Unit : MonoBehaviour
 
     public float currentHp;
 
+    public float maxMp;
+
+    public float currentMp;
+
     public float attack;
 
     // TODO: Set attack and movespeed dynamically;
@@ -63,6 +67,21 @@ public class Unit : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+
+    public void ChangeMana(float amount)
+    {
+        currentMp += amount;
+        currentMp = Mathf.Clamp(currentMp, 0f, maxMp); // Ensure health doesn't go below 0 or exceed maxHp
+        // float percentage = currentMp / maxMp;
+        // currentHpBar.localScale = new Vector3(percentage, 1, 1);
+        if (gameObject.CompareTag("Player"))
+        {
+            PlayerStats.instance.ChangeMana(amount);
+        }
+
+    }
+
     public void SetupHealthBar()
     {
         GameObject healthBarPrefab = Resources.Load<GameObject>("Prefabs/UI/HealthBar");
