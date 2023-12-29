@@ -48,13 +48,16 @@ public class Unit : MonoBehaviour
         RayCast();
     }
 
-    public void ReceiveDamage(float damage)
+    public void ChangeHealth(float amount)
     {
-        currentHp -= damage;
+        currentHp += amount;
         currentHp = Mathf.Clamp(currentHp, 0f, maxHp); // Ensure health doesn't go below 0 or exceed maxHp
         float percentage = currentHp / maxHp;
         currentHpBar.localScale = new Vector3(percentage, 1, 1);
-
+        if (gameObject.CompareTag("Player"))
+        {
+            PlayerStats.instance.ChangeHealth(amount);
+        }
         if (currentHp <= 0)
         {
             Destroy(gameObject);
@@ -78,7 +81,6 @@ public class Unit : MonoBehaviour
 
     public void Attack()
     {
-
         if (animator.GetBool("isAttacking") == true)
         {
             // if already attacking, don't attack again.
@@ -130,21 +132,23 @@ public class Unit : MonoBehaviour
 
         foreach (var hit in hits)
         {
-            if (hit.collider != null && !uniqueColliders.Contains(hit.collider))
+            Debug.Log(hit.collider.ToString());
+
+            if (hit.collider != null && hit.collider is BoxCollider2D && !uniqueColliders.Contains(hit.collider))
             {
                 uniqueColliders.Add(hit.collider);
                 GameObject other = hit.collider.gameObject;
                 if (gameObject.CompareTag("Player") && other.CompareTag("Enemy"))
                 {
-                    ObjectInstantiator.instance.InstantiateFloatingTextAt(attack.ToString(), other.transform.position, Color.red);
-                    other.GetComponent<Unit>().ReceiveDamage(attack);
+                    ObjectInstantiator.instance.InstantiateFloatingTextAt(attack.ToString(), other.transform.position, Color.yellow);
+                    Unit unitScript = other.GetComponent<Unit>();
+                    unitScript.ChangeHealth(-attack);
                 }
                 else if (gameObject.CompareTag("Enemy") && other.CompareTag("Player"))
                 {
                     ObjectInstantiator.instance.InstantiateFloatingTextAt(attack.ToString(), other.transform.position, Color.red);
-                    Unit player = other.GetComponent<Unit>();
-                    player.ReceiveDamage(attack);
-                    PlayerStats.instance.ReceiveDamage(attack);
+                    Unit unitScript = other.GetComponent<Unit>();
+                    unitScript.ChangeHealth(-attack);
                 }
             }
 

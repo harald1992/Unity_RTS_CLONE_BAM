@@ -36,6 +36,31 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            PlayerStats.instance.CastSpell(0);
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            PlayerStats.instance.CastSpell(1);
+        }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            PlayerStats.instance.CastSpell(2);
+        }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            PlayerStats.instance.CastSpell(3);
+        }
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            PlayerStats.instance.CastSpell(4);
+        }
+
+
         if (Input.GetKeyDown(KeyCode.T))
         {
             ObjectInstantiator.instance.InstantiateFloatingTextAt("30", GetMousePosition2D(), Color.white);

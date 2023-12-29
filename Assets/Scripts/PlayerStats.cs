@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using Unity.VisualScripting;
+using System.Linq;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -25,6 +26,12 @@ public class PlayerStats : MonoBehaviour
     public float attack = 2f;
 
     private int gold = 0;
+
+
+    [SerializeField]
+    private List<GameObject> spellContainers;
+
+
 
     public void UpdateUI()
     {
@@ -54,9 +61,9 @@ public class PlayerStats : MonoBehaviour
         UpdateUI();
     }
 
-    public void ReceiveDamage(float damage)
+    public void ChangeHealth(float amount)
     {
-        currentHp -= damage;
+        currentHp += amount;
         UpdateUI();
         if (currentHp <= 0)
         {
@@ -64,5 +71,40 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
-}
 
+    public void CastSpell(int index)
+    {
+        ISpell spell = spellContainers.ElementAt(index).GetComponentInChildren<ISpell>();
+
+        if (spell != null)
+        {
+            Debug.Log(spell);
+            spell.Cast();
+        }
+
+
+
+    }
+
+
+    public void FindChildByTag(string tag)
+    {
+        Transform child = FindChildWithTag(transform, tag);
+
+        if (child != null)
+        {
+            Debug.Log("Found child with the specified tag: " + child.name);
+            // Access the child object or its components
+        }
+        else
+        {
+            Debug.Log("Child with the specified tag not found.");
+        }
+    }
+
+    // Custom method to find child by tag using LINQ
+    Transform FindChildWithTag(Transform parent, string tag)
+    {
+        return parent.Cast<Transform>().FirstOrDefault(child => child.CompareTag(tag));
+    }
+}

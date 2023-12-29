@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private Unit unitScript;
+    public Unit unitScript;
     private Rigidbody2D rigidbody2D;
 
     public static Player instance;

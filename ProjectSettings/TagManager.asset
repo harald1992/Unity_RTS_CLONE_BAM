@@ -11,6 +11,7 @@ TagManager:
   - Wall
   - PlayerStats
   - GoldStats
+  - SpellPrefab
   layers:
   - Default
   - TransparentFX
