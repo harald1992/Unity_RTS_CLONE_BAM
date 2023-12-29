@@ -124,3 +124,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12b42794b8c424d55bca565df47f7bc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spellAnimationPrefab: {fileID: 828931803365678475, guid: 3011b372a7dc34888a170d8d86b02bd1, type: 3}

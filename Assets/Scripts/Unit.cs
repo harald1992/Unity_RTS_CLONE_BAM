@@ -31,7 +31,6 @@ public class Unit : MonoBehaviour
     public Animator animator;
     protected string currentState;
 
-    private Rigidbody2D rigidbody2D;
     protected bool isColliding;
 
     public Vector3 direction;
@@ -40,9 +39,10 @@ public class Unit : MonoBehaviour
     private Coroutine currentActionCoroutine;
     private Vector3 targetPosition;
 
+
+
     public void Start()
     {
-        rigidbody2D = GetComponent<Rigidbody2D>();
         animator = gameObject.GetComponent<Animator>();
         currentHp = maxHp;
     }
@@ -50,6 +50,9 @@ public class Unit : MonoBehaviour
     private void Update()
     {
         RayCast();
+        ChangeHealth(0.1F * Time.deltaTime);
+        ChangeMana(0.1F * Time.deltaTime);
+
     }
 
     public void ChangeHealth(float amount)
@@ -144,15 +147,13 @@ public class Unit : MonoBehaviour
           0).normalized * size;
 
         // RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, size);
-        RaycastHit2D[] hits = Physics2D.BoxCastAll(transform.position, new Vector2(0.25f, 0.25f), 0, direction, size);
+        RaycastHit2D[] hits = Physics2D.BoxCastAll(transform.position, new Vector2(0.35f, 0.35f), 0, direction, size);
 
         // RaycastHit2D[] hits = Physics2D.BoxCastAll(origin, new Vector2(0.1f, 0.1f), 0f, direction, 0.5f);
         HashSet<Collider2D> uniqueColliders = new HashSet<Collider2D>();    // boxCastAll can hit the same object twice, maybe because I have circle and box colliders on the units
 
         foreach (var hit in hits)
         {
-            Debug.Log(hit.collider.ToString());
-
             if (hit.collider != null && hit.collider is BoxCollider2D && !uniqueColliders.Contains(hit.collider))
             {
                 uniqueColliders.Add(hit.collider);
@@ -170,17 +171,13 @@ public class Unit : MonoBehaviour
                     unitScript.ChangeHealth(-attack);
                 }
             }
-
         }
     }
-
-
 
     void OnCollisionStay2D(Collision2D collision)
     {
         foreach (ContactPoint2D contact in collision.contacts)
         {
-            // Check if collision occurs with a specific tag, e.g., "Obstacle"
             if (collision.gameObject.CompareTag("Wall"))
             {
                 isColliding = true;

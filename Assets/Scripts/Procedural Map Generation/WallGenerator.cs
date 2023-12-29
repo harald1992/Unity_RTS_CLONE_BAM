@@ -11,7 +11,7 @@ public static class WallGenerator
         var basicWallPositions = FindWallsInDirections(floorPositions, Direction2D.cardinalDirectionsList);
         var cornerWallPositions = FindWallsInDirections(floorPositions, Direction2D.diagonalDirectionsList);
         basicWallPositions.UnionWith(cornerWallPositions);
-        tilemapVisualizer.PaintWalls(basicWallPositions);
+        tilemapVisualizer.PaintAllWalls(basicWallPositions);
     }
 
     private static HashSet<Vector2Int> FindWallsInDirections(HashSet<Vector2Int> floorPositions, List<Vector2Int> directionList)

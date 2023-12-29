@@ -1,59 +1,47 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class TilemapVisualizer : MonoBehaviour
 {
     [SerializeField]
-    private Tilemap floorMap, wallMap;
+    private Tilemap corridorMap, roomMap, wallMap;
 
     [SerializeField]
-    private List<TileBase> tiles;
+    private List<TileBase> corridors;
 
-    private TileBase chosenTile;
+    private TileBase chosenCorridor;
+
+    [SerializeField]
+    private List<TileBase> rooms;
 
     [SerializeField]
     private List<TileBase> walls;
 
     private TileBase chosenWall;
 
-    [SerializeField]
-    private List<TileBase> roomTiles;
-    private TileBase chosenRoom;
-
     public void Clear()
     {
-        floorMap.ClearAllTiles();
+        corridorMap.ClearAllTiles();
+        roomMap.ClearAllTiles();
         wallMap.ClearAllTiles();
     }
 
-    public void PaintFloor(IEnumerable<Vector2Int> tilePositions)
+    public void PaintAllCorridors(IEnumerable<Vector2Int> tilePositions)
     {
-        SetRandomFloor();
+        chosenCorridor = corridors[UnityEngine.Random.Range(0, corridors.Count)];
         foreach (var position in tilePositions)
         {
-            PaintSingleTile(position, floorMap, chosenTile);
+            PaintSingleTile(position, corridorMap, chosenCorridor);
         }
     }
 
-    private void SetRandomFloor()
-    {
-        chosenTile = tiles[UnityEngine.Random.Range(0, walls.Count)];
-    }
-
-    private void SetRandomWall()
+    public void PaintAllWalls(IEnumerable<Vector2Int> positions)
     {
         chosenWall = walls[UnityEngine.Random.Range(0, walls.Count)];
-    }
-
-
-
-
-    public void PaintWalls(IEnumerable<Vector2Int> positions)
-    {
-        SetRandomWall();
         foreach (var position in positions)
         {
             PaintSingleTile(position, wallMap, chosenWall);
@@ -66,17 +54,14 @@ public class TilemapVisualizer : MonoBehaviour
         tileMap.SetTile(tilePosition, tileType);
     }
 
-    public void PaintRooms(HashSet<Vector2Int> roomPositions)
+    public void PaintUniqueRoom(HashSet<Vector2Int> roomPositions)
     {
-        SetRandomRoom();
+        TileBase chosenRoom = rooms.ElementAt(UnityEngine.Random.Range(0, rooms.Count));
+
         foreach (var position in roomPositions)
         {
-            PaintSingleTile(position, floorMap, chosenRoom);
+            PaintSingleTile(position, roomMap, chosenRoom);
         }
     }
 
-    private void SetRandomRoom()
-    {
-        chosenRoom = roomTiles[UnityEngine.Random.Range(0, roomTiles.Count)];
-    }
 }

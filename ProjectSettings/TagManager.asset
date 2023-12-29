@@ -12,6 +12,7 @@ TagManager:
   - PlayerStats
   - GoldStats
   - SpellPrefab
+  - GameObjectContainer
   layers:
   - Default
   - TransparentFX

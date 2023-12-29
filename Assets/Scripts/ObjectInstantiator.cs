@@ -36,23 +36,44 @@ public class ObjectInstantiator : MonoBehaviour
 
     public GameObject InstantiatePlayer(GameObject objectPrefab, Vector2 position)
     {
-        GameObject ob = InstantiateUnit(objectPrefab, position);
-        ob.AddComponent<Player>();
-        ob.name = "Player";
-        return ob;
+        if (Player.instance != null)
+        {
+            Player.instance.transform.position = (Vector3)position;
+            return Player.instance.gameObject;
+        }
+        else
+        {
+            GameObject ob = InstantiateUnit(objectPrefab, position);
+            ob.AddComponent<Player>();
+            ob.name = "Player";
+            return ob;
+        }
     }
 
     public GameObject InstantiateEnemy(GameObject objectPrefab, Vector2 position)
     {
         GameObject ob = InstantiateUnit(objectPrefab, position);
         ob.AddComponent<Enemy>();
+        GameObject container = GameObject.FindWithTag("GameObjectContainer");
+        ob.transform.parent = container.transform;
         return ob;
     }
 
     public GameObject InstantiateObject(GameObject objectPrefab, Vector2 position)
     {
         GameObject ob = Instantiate(objectPrefab);
-        ob.transform.position = new Vector3(position.x, position.y, 0);
+        Vector3 newPosition = new Vector3(position.x, position.y, 0);
+
+        // compensate for collider, so object spawns with the collider in the middle of the tile.
+        CircleCollider2D collider = ob.GetComponent<CircleCollider2D>();
+        if (collider != null)
+        {
+            Vector3 totalOffset = CalculateOffsetPlusRadius(collider.offset.x, collider.offset.y, collider.radius);
+            newPosition -= totalOffset;
+        }
+        ob.transform.position = newPosition;
+        GameObject container = GameObject.FindWithTag("GameObjectContainer");
+        ob.transform.parent = container.transform;
         return ob;
     }
 
@@ -66,9 +87,6 @@ public class ObjectInstantiator : MonoBehaviour
         TextMesh mesh = ob.GetComponent<TextMesh>();
         mesh.text = text;
         mesh.color = color;
-
-
-
     }
 
 

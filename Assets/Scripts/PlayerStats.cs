@@ -7,6 +7,8 @@ using System;
 using Unity.VisualScripting;
 using System.Linq;
 
+
+
 public class PlayerStats : MonoBehaviour
 {
     public static PlayerStats instance;
@@ -37,6 +39,8 @@ public class PlayerStats : MonoBehaviour
     [SerializeField]
     private List<GameObject> spellContainers;
 
+    [SerializeField]
+    private List<GameObject> spellPrefabs = new List<GameObject>();
 
 
     public void UpdateUI()
@@ -47,6 +51,38 @@ public class PlayerStats : MonoBehaviour
         manaBarAmountImage.fillAmount = currentMp / maxMp;
 
         goldTextUI.text = gold.ToString();
+
+    }
+
+    private void UpdateSpellContainers()
+    {
+        // destroy all SpellPrefabs in spellContainers
+        for (int i = 0; i < spellContainers.Count; i++)
+        {
+            // destroy the SpellPrefab
+            for (int j = 0; j < transform.childCount; j++)
+            {
+                Transform child = transform.GetChild(j);
+                if (child != null && child.CompareTag("SpellPrefab"))
+                {
+                    Debug.Log("Destroy gameobject spellprefab");
+                    Destroy(child.gameObject);
+                }
+            }
+
+            // Instantiate the SpellPrefab if it has a spell
+            if (i < spellPrefabs.Count)
+            {
+                GameObject spellPrefab = spellPrefabs.ElementAt(i);
+                if (spellPrefab != null)
+                {
+                    // GameObject prefab = Instantiate(spellPrefab);
+                    Transform parentTransform = spellContainers.ElementAt(i).transform;
+                    Instantiate(spellPrefab, parentTransform.position, Quaternion.identity, parentTransform);
+
+                }
+            }
+        }
     }
 
     void Start()
@@ -61,6 +97,8 @@ public class PlayerStats : MonoBehaviour
         }
 
         UpdateUI();
+        UpdateSpellContainers();
+
     }
 
     public void IncreaseGold(int goldAmount)
@@ -85,12 +123,32 @@ public class PlayerStats : MonoBehaviour
         UpdateUI();
     }
 
-
-
     public void CastSpell(int index)
     {
         ISpell spell = spellContainers.ElementAt(index).GetComponentInChildren<ISpell>();
         spell?.Cast();
+
+    }
+
+    public void AddSpell(GameObject spellPrefab)
+    {
+        bool isNewSpell = true;
+
+        foreach (var spell in spellPrefabs)
+        {
+            if (spell.name == spellPrefab.name)
+            {
+                isNewSpell = false;
+                // upgrade the spell?
+                return;
+            }
+
+        }
+        if (isNewSpell == true)
+        {
+            spellPrefabs.Add(spellPrefab);
+            UpdateSpellContainers();
+        }
 
     }
 }

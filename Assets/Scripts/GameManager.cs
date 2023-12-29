@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     private CorridorFirstMapCreator mapGenerator;
 
     public static GameManager instance;
-    public HashSet<Vector2Int> floorPositions = new HashSet<Vector2Int>();
+    // public HashSet<Vector2Int> floorPositions = new HashSet<Vector2Int>();
 
     void Start()
     {
@@ -28,10 +28,24 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        mapGenerator = transform.Find("CorridorFirstMapCreator").GetComponent<CorridorFirstMapCreator>();
+        CreateNewDungeon();
+        SceneManager.sceneLoaded += OnSceneLoaded; // Subscribe to the sceneLoaded event
+    }
+
+    public void CreateNewDungeon()
+    {
+        GameObject container = GameObject.FindWithTag("GameObjectContainer");
+        foreach (Transform child in container.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        if (mapGenerator == null)
+        {
+            mapGenerator = transform.Find("CorridorFirstMapCreator").GetComponent<CorridorFirstMapCreator>();
+        }
 
         mapGenerator.GenerateDungeon();
-        SceneManager.sceneLoaded += OnSceneLoaded; // Subscribe to the sceneLoaded event
     }
 
     void Update()
@@ -59,7 +73,6 @@ public class GameManager : MonoBehaviour
         {
             PlayerStats.instance.CastSpell(4);
         }
-
 
         if (Input.GetKeyDown(KeyCode.T))
         {

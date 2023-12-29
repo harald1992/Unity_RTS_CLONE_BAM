@@ -4,7 +4,6 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public Unit unitScript;
-    private Rigidbody2D rigidbody2D;
 
     public static Player instance;
     public string areaTransitionName;   // exit just used changed by AreaExit&AreaEntrance scripts
@@ -43,7 +42,6 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        // unitScript.RayCast();
 
         if (unitScript.animator == null) { return; }
 
