@@ -23,11 +23,13 @@ public class Player : MonoBehaviour
         }
 
         unitScript = gameObject.GetComponent<Unit>();
-        unitScript.maxHp = PlayerStats.instance.maxHp;
-        unitScript.currentHp = unitScript.maxHp;
-        unitScript.maxMp = PlayerStats.instance.maxMp;
-        unitScript.currentMp = PlayerStats.instance.currentMp;
-        unitScript.attack = PlayerStats.instance.attack;
+        unitScript.maxHp = 25f;
+        unitScript.currentHp = 25f;
+        unitScript.maxMp = 10f;
+        unitScript.currentMp = 10f;
+        unitScript.attack = 2f;
+
+        GameEvents.instance.PlayerChanged();
 
         unitScript.SetupHealthBar();
 

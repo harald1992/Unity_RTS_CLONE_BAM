@@ -7,7 +7,7 @@ using UnityEngine;
 public abstract class AbstractDungeonGenerator : MonoBehaviour
 {
     [SerializeField]
-    protected TilemapVisualizer tilemapVisualizer = null;
+    protected TerrainCreator terrainCreator = null;
 
     [SerializeField]
     protected Vector2Int startPosition = Vector2Int.zero;
@@ -27,7 +27,7 @@ public abstract class AbstractDungeonGenerator : MonoBehaviour
 
     public void ClearMap()
     {
-        tilemapVisualizer.Clear();
+        terrainCreator.Clear();
         ClearEnemies();
     }
 

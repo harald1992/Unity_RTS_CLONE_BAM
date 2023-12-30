@@ -18,7 +18,8 @@ public class CameraFollow2D : MonoBehaviour
             // Vector3 desiredPosition = target.position + offset;
             // Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
             // transform.position = new Vector3(smoothedPosition.x, smoothedPosition.y, -10);
-            transform.position = new Vector3(target.position.x, target.position.y, transform.position.z);
+            transform.position = new Vector3(target.position.x, target.position.y - 5f, transform.position.z);
+            transform.rotation = Quaternion.Euler(-30f, 0f, 0f);
         }
     }
 

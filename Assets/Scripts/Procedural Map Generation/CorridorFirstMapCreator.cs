@@ -19,7 +19,7 @@ public class CorridorFirstMapCreator : AbstractDungeonGenerator
         // create corridors and add the ends to roompositions
         CorridorMapWalk(corridorPositions, roomPositions);
         // already paint the corridors so the roompositions can overlay it afterwards
-        tilemapVisualizer.PaintAllCorridors(corridorPositions);
+        terrainCreator.PaintAllCorridors(corridorPositions);
 
         // Create roomposition at every dead end, for if the mapwalk walked back the same direction.
         List<Vector2Int> allDeadEnds = FindAllDeadEnds(corridorPositions);
@@ -36,7 +36,7 @@ public class CorridorFirstMapCreator : AbstractDungeonGenerator
         HashSet<Vector2Int> allWalkableTiles = new HashSet<Vector2Int>();
         allWalkableTiles.UnionWith(corridorPositions);
         allWalkableTiles.UnionWith(roomPositions);
-        WallGenerator.CreateWalls(allWalkableTiles, tilemapVisualizer);
+        WallGenerator.CreateWalls(allWalkableTiles, terrainCreator);
     }
 
     private List<Vector2Int> FindAllDeadEnds(HashSet<Vector2Int> corridorPositions)
@@ -81,7 +81,6 @@ public class CorridorFirstMapCreator : AbstractDungeonGenerator
             }
 
             floorPositions.UnionWith(path);
-
         }
     }
 
@@ -93,29 +92,25 @@ public class CorridorFirstMapCreator : AbstractDungeonGenerator
         {
             if (i == 0)
             {
-
-                HashSet<Vector2Int> path = CreateRoom(roomPositions.ElementAt(i));
+                HashSet<Vector2Int> path = CreatePlayerRoom(roomPositions.ElementAt(i));
                 newPositions.UnionWith(path);
-
-                GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Units/Knight");
-                ObjectInstantiator.instance.InstantiatePlayer(playerPrefab, roomPositions.ElementAt(i));
-
-                GameObject monolith = Resources.Load<GameObject>("Prefabs/Objects/Monolith_Exit");
-                ObjectInstantiator.instance.InstantiateObject(monolith, roomPositions.ElementAt(i));
-
             }
             else if (i == roomPositions.Count - 1)
             {
-                GameObject monolithEntrance = Resources.Load<GameObject>("Prefabs/Objects/Monolith_Entrance_0");
-                ObjectInstantiator.instance.InstantiateObject(monolithEntrance, roomPositions.ElementAt(i));
-
-                HashSet<Vector2Int> path = CreateRoom(roomPositions.ElementAt(i));
+                HashSet<Vector2Int> path = CreateExitRoom(roomPositions.ElementAt(i));
                 newPositions.UnionWith(path);
-                SpawnEnemies(path);
-                SpawnObjects(path);
+
+                // GameObject monolithEntrance = Resources.Load<GameObject>("Prefabs/Objects/Monolith_Entrance_0");
+                // ObjectInstantiator.instance.InstantiateObject(monolithEntrance, roomPositions.ElementAt(i));
+
+                // HashSet<Vector2Int> path = CreateRoom(roomPositions.ElementAt(i));
+                // newPositions.UnionWith(path);
+                // SpawnEnemies(path);
+                // SpawnObjects(path);
             }
             else
             {
+                //
                 HashSet<Vector2Int> path = CreateRoom(roomPositions.ElementAt(i));
                 newPositions.UnionWith(path);
                 SpawnEnemies(path);
@@ -129,18 +124,80 @@ public class CorridorFirstMapCreator : AbstractDungeonGenerator
         roomPositions.UnionWith(newPositions);
     }
 
+    private HashSet<Vector2Int> CreateExitRoom(Vector2Int position)
+    {
+        HashSet<Vector2Int> roomPath = CreateTorchRoom(position);
+        terrainCreator.PaintUniqueRoom(roomPath);
+        GameObject monolithEntrance = Resources.Load<GameObject>("Prefabs/Objects/Monolith_Entrance_0");
+        ObjectInstantiator.instance.InstantiateObject(monolithEntrance, position);
+
+        return roomPath;
+    }
+
+    private HashSet<Vector2Int> CreatePlayerRoom(Vector2Int position)
+    {
+        // HashSet<Vector2Int> path = CreateRoom(position);
+
+        // int xMax = Random.Range(3, 7);
+        // int yMax = Random.Range(3, 7);
+        // int xSize = 3;
+        // int ySize = 3;
+        // HashSet<Vector2Int> roomPath = ProceduralGenerationAlgorithms.CreateRoom(position, xSize, ySize);
+        // HashSet<Vector2Int> path = ProceduralGenerationAlgorithms.SimpleRandomWalk(position, 30);
+        HashSet<Vector2Int> roomPath = CreateTorchRoom(position);
+        terrainCreator.PaintUniqueRoom(roomPath);
+
+        // Vector2Int leftTop = roomPath.ElementAt(0);
+        // Vector2Int rightTop = roomPath.ElementAt(xSize - 1);
+        // Vector2Int leftBottom = roomPath.ElementAt(roomPath.Count - xSize);
+        // Vector2Int rightBottom = roomPath.ElementAt(roomPath.Count - 1);
+
+        // GameObject torchPrefab = ObjectInstantiator.instance.GetPrefabByName("Torch");
+        // ObjectInstantiator.instance.InstantiateObject(torchPrefab, leftTop);
+        // ObjectInstantiator.instance.InstantiateObject(torchPrefab, rightTop);
+        // ObjectInstantiator.instance.InstantiateObject(torchPrefab, leftBottom);
+        // ObjectInstantiator.instance.InstantiateObject(torchPrefab, rightBottom);
+
+        GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Units/Knight");
+        ObjectInstantiator.instance.InstantiatePlayer(playerPrefab, position);
+
+        GameObject monolith = Resources.Load<GameObject>("Prefabs/Objects/Monolith_Exit");
+        ObjectInstantiator.instance.InstantiateObject(monolith, position);
+
+        return roomPath;
+    }
+
+    private HashSet<Vector2Int> CreateTorchRoom(Vector2Int position)
+    {
+        int xSize = 5;
+        int ySize = 5;
+        HashSet<Vector2Int> roomPath = ProceduralGenerationAlgorithms.CreateRoom(position, xSize, ySize);
+
+        Vector2Int leftTop = roomPath.ElementAt(0);
+        Vector2Int rightTop = roomPath.ElementAt(xSize - 1);
+        Vector2Int leftBottom = roomPath.ElementAt(roomPath.Count - xSize);
+        Vector2Int rightBottom = roomPath.ElementAt(roomPath.Count - 1);
+
+        GameObject torchPrefab = ObjectInstantiator.instance.GetPrefabByName("Torch");
+        ObjectInstantiator.instance.InstantiateObject(torchPrefab, leftTop);
+        ObjectInstantiator.instance.InstantiateObject(torchPrefab, rightTop);
+        ObjectInstantiator.instance.InstantiateObject(torchPrefab, leftBottom);
+        ObjectInstantiator.instance.InstantiateObject(torchPrefab, rightBottom);
+        return roomPath;
+    }
+
     private HashSet<Vector2Int> CreateRoom(Vector2Int position)
     {
 
 
-        int xMax = Random.Range(1, 5);
-        int yMax = Random.Range(1, 5);
-        HashSet<Vector2Int> path = ProceduralGenerationAlgorithms.CreateRoom(position, xMax, yMax);
+        // int xMax = Random.Range(1, 5);
+        // int yMax = Random.Range(1, 5);
+        int xSize = 3;
+        int ySize = 3;
+        HashSet<Vector2Int> path = ProceduralGenerationAlgorithms.CreateRoom(position, xSize, ySize);
         // HashSet<Vector2Int> path = ProceduralGenerationAlgorithms.SimpleRandomWalk(position, 30);
 
-        // Paint this room
-        tilemapVisualizer.PaintUniqueRoom(path);
-        // tilemapVisualizer.PaintCorridors(path);
+        terrainCreator.PaintUniqueRoom(path);
 
         return path;
     }

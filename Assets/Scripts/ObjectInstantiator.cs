@@ -1,11 +1,17 @@
 using System;
-using System.Collections;
+// using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ObjectInstantiator : MonoBehaviour
 {
     public static ObjectInstantiator instance;
+
+    public List<GameObject> gameObjectPrefabs;
+
+    public List<GameObject> goldPrefabs;
+
     void Start()
     {
         if (instance == null)
@@ -107,5 +113,24 @@ public class ObjectInstantiator : MonoBehaviour
         return totalOffset;
     }
 
+    public GameObject GetPrefabByName(string name)
+    {
+        foreach (var item in gameObjectPrefabs)
+        {
+            if (item.name.Contains(name))
+            {
+                return item;
+            }
+        }
+
+        Debug.Log("Could not find prefab by name");
+        return gameObjectPrefabs.ElementAt(0);
+
+    }
+
+    public GameObject GetRandomGoldPrefab()
+    {
+        return goldPrefabs.ElementAt(UnityEngine.Random.Range(0, goldPrefabs.Count));
+    }
 
 }

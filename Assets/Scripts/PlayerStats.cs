@@ -25,13 +25,13 @@ public class PlayerStats : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI goldTextUI;
 
-    public float maxHp = 25f;
-    public float currentHp = 25f;
+    // public float maxHp = 25f;
+    // public float currentHp = 25f;
 
-    public float maxMp = 10f;
-    public float currentMp = 10f;
+    // public float maxMp = 10f;
+    // public float currentMp = 10f;
 
-    public float attack = 2f;
+    // public float attack = 2f;
 
     private int gold = 0;
 
@@ -43,14 +43,32 @@ public class PlayerStats : MonoBehaviour
     private List<GameObject> spellPrefabs = new List<GameObject>();
 
 
-    public void UpdateUI()
+    private void UpdateUI()
     {
-        attackTextUI.text = attack.ToString();
+        if (Player.instance == null)
+        {
+            Debug.Log("No Player yet");
+            return;
+        }
+        Unit value = Player.instance.unitScript;
 
-        healthBarAmountImage.fillAmount = currentHp / maxHp;
-        manaBarAmountImage.fillAmount = currentMp / maxMp;
+        attackTextUI.text = value.attack.ToString();
+
+        healthBarAmountImage.fillAmount = value.currentHp / value.maxHp;
+        manaBarAmountImage.fillAmount = value.currentMp / value.maxMp;
 
         goldTextUI.text = gold.ToString();
+
+        if (value.currentHp <= 0)
+        {
+            ObjectInstantiator.instance.InstantiateFloatingTextAt("GAME OVER", Player.instance.gameObject.transform.position, Color.white);
+        }
+        // attackTextUI.text = attack.ToString();
+
+        // healthBarAmountImage.fillAmount = currentHp / maxHp;
+        // manaBarAmountImage.fillAmount = currentMp / maxMp;
+
+        // goldTextUI.text = gold.ToString();
 
     }
 
@@ -79,7 +97,6 @@ public class PlayerStats : MonoBehaviour
                     // GameObject prefab = Instantiate(spellPrefab);
                     Transform parentTransform = spellContainers.ElementAt(i).transform;
                     Instantiate(spellPrefab, parentTransform.position, Quaternion.identity, parentTransform);
-
                 }
             }
         }
@@ -96,6 +113,8 @@ public class PlayerStats : MonoBehaviour
             Destroy(gameObject);
         }
 
+        GameEvents.instance.onPlayerChanged += UpdateUI;    // subscribe to onPlayerChanged
+
         UpdateUI();
         UpdateSpellContainers();
 
@@ -107,35 +126,37 @@ public class PlayerStats : MonoBehaviour
         UpdateUI();
     }
 
-    public void ChangeHealth(float amount)
-    {
-        currentHp += amount;
-        UpdateUI();
-        if (currentHp <= 0)
-        {
-            ObjectInstantiator.instance.InstantiateFloatingTextAt("GAME OVER", Player.instance.gameObject.transform.position, Color.white);
-        }
-    }
+    // public void ChangeHealth(float amount)
+    // {
+    //     currentHp += amount;
+    //     UpdateUI();
+    //     if (currentHp <= 0)
+    //     {
+    //         ObjectInstantiator.instance.InstantiateFloatingTextAt("GAME OVER", Player.instance.gameObject.transform.position, Color.white);
+    //     }
+    // }
 
-    public void ChangeMana(float amount)
-    {
-        currentMp += amount;
-        UpdateUI();
-    }
+    // public void ChangeMana(float amount)
+    // {
+    //     currentMp += amount;
+    //     UpdateUI();
+    // }
+
+
+    // public void ChangeAttack(float amount)
+    // {
+    //     attack += amount;
+    //     UpdateUI();
+    // }
 
     public void CastSpell(int index)
     {
         ISpell spell = spellContainers.ElementAt(index).GetComponentInChildren<ISpell>();
         spell?.Cast();
-
     }
 
     public void AddSpell(GameObject spellPrefab)
-
     {
-
-        Debug.Log(spellPrefab.ToString());
-
         bool isNewSpell = true;
 
         foreach (var spell in spellPrefabs)

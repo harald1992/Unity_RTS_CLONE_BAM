@@ -69,18 +69,30 @@ public static class ProceduralGenerationAlgorithms
         return floorPositions;
     }
 
-    public static HashSet<Vector2Int> CreateRoom(Vector2Int middlePosition, int xMax, int yMax)
+
+    // only support 3, 5 etc
+    public static HashSet<Vector2Int> CreateRoom(Vector2Int middlePosition, int xSize, int ySize)
     {
+        // if xSize = 3; ->  -(3-1)/2 =    and xMax = (3-1)/2
+        int xMin = -(xSize - 1) / 2;
+        int xMax = (xSize - 1) / 2;
+        // if (xSize %2 != 0) { 
+        //     // odd, so do x
+        // }
+
+
+        int yMin = -(ySize - 1) / 2;
+        int yMax = (ySize - 1) / 2;
+
 
         HashSet<Vector2Int> path = new HashSet<Vector2Int>();
-        for (int x = -1; x <= xMax; x++)
+        for (int x = xMin; x <= xMax; x++)
         {
-            for (int y = -1; y <= yMax; y++)
+            for (int y = yMin; y <= yMax; y++)
             {
                 path.Add(new Vector2Int(middlePosition.x + x, middlePosition.y + y));
             }
         }
-        // path.Add(new Vector2Int(middlePosition.x, middlePosition.y));
 
         return path;
     }

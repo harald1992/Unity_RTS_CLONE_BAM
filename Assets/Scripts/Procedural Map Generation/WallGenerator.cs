@@ -6,12 +6,12 @@ using UnityEngine;
 public static class WallGenerator
 {
 
-    public static void CreateWalls(HashSet<Vector2Int> floorPositions, TilemapVisualizer tilemapVisualizer)
+    public static void CreateWalls(HashSet<Vector2Int> floorPositions, TerrainCreator terrainCreator)
     {
         var basicWallPositions = FindWallsInDirections(floorPositions, Direction2D.cardinalDirectionsList);
         var cornerWallPositions = FindWallsInDirections(floorPositions, Direction2D.diagonalDirectionsList);
         basicWallPositions.UnionWith(cornerWallPositions);
-        tilemapVisualizer.PaintAllWalls(basicWallPositions);
+        terrainCreator.PaintAllWalls(basicWallPositions);
     }
 
     private static HashSet<Vector2Int> FindWallsInDirections(HashSet<Vector2Int> floorPositions, List<Vector2Int> directionList)

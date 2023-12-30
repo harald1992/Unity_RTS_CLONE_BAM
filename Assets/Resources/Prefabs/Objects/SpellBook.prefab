@@ -48,7 +48,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   possibleSpellPrefabs:
-  - {fileID: 0}
+  - {fileID: 5382076087482114346, guid: a8c37e867ee4e40e289a56b83e2eb8c8, type: 3}
+  - {fileID: 1737697480504619856, guid: 9eaf155a9178445d5b926b63c242b27d, type: 3}
 --- !u!212 &1250990023803839958
 SpriteRenderer:
   m_ObjectHideFlags: 0

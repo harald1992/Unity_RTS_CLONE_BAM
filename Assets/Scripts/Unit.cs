@@ -52,7 +52,6 @@ public class Unit : MonoBehaviour
         RayCast();
         ChangeHealth(0.1F * Time.deltaTime);
         ChangeMana(0.1F * Time.deltaTime);
-
     }
 
     public void ChangeHealth(float amount)
@@ -62,9 +61,8 @@ public class Unit : MonoBehaviour
         float percentage = currentHp / maxHp;
         currentHpBar.localScale = new Vector3(percentage, 1, 1);
         if (gameObject.CompareTag("Player"))
-        {
-            PlayerStats.instance.ChangeHealth(amount);
-        }
+            GameEvents.instance.PlayerChanged();
+
         if (currentHp <= 0)
         {
             Destroy(gameObject);
@@ -79,10 +77,23 @@ public class Unit : MonoBehaviour
         // float percentage = currentMp / maxMp;
         // currentHpBar.localScale = new Vector3(percentage, 1, 1);
         if (gameObject.CompareTag("Player"))
-        {
-            PlayerStats.instance.ChangeMana(amount);
-        }
+            // {
+            //     PlayerStats.instance.ChangeMana(amount);
+            // }
+            GameEvents.instance.PlayerChanged();
 
+
+    }
+
+    public void ChangeAttack(float amount)
+    {
+        attack += amount;
+        if (gameObject.CompareTag("Player"))
+        {
+            // PlayerStats.instance.ChangeAttack(amount);
+            GameEvents.instance.PlayerChanged();
+
+        }
     }
 
     public void SetupHealthBar()

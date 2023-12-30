@@ -12,6 +12,7 @@ public class SpellBook : MonoBehaviour, IInteractable
     {
         GameObject randomSpellPrefab = possibleSpellPrefabs.ElementAt(Random.Range(0, possibleSpellPrefabs.Count));
         PlayerStats.instance.AddSpell(randomSpellPrefab);
+        Destroy(gameObject);
     }
 
 }
