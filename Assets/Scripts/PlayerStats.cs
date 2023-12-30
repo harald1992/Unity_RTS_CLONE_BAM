@@ -131,7 +131,11 @@ public class PlayerStats : MonoBehaviour
     }
 
     public void AddSpell(GameObject spellPrefab)
+
     {
+
+        Debug.Log(spellPrefab.ToString());
+
         bool isNewSpell = true;
 
         foreach (var spell in spellPrefabs)
@@ -139,7 +143,7 @@ public class PlayerStats : MonoBehaviour
             if (spell.name == spellPrefab.name)
             {
                 isNewSpell = false;
-                // upgrade the spell?
+                // TODO: upgrade the spell?
                 return;
             }
 

@@ -22,6 +22,18 @@ public class Heal : MonoBehaviour, ISpell
 
         GameObject ob = Instantiate(spellAnimationPrefab, Player.instance.transform);
         ob.transform.localPosition = new Vector3(0, -0.5f, 0);   // so it starts on the feet
+
+        // StartCoroutine(DestroyInTwoSeconds(ob));
+    }
+
+    private IEnumerator DestroyInTwoSeconds(GameObject particleObject)
+    {
+        yield return new WaitForSeconds(2.0F);
+        if (gameObject != null && particleObject != null)
+        {
+            Destroy(particleObject);
+        }
+
     }
 
 
