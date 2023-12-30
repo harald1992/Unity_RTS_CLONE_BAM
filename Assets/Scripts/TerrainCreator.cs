@@ -69,20 +69,19 @@ public class TerrainCreator : MonoBehaviour
         {
             return;
         }
-        float playerYPosition = Player.instance.gameObject.transform.position.y;
+        Vector3 playerPosition = Player.instance.gameObject.transform.position;
 
         for (int i = 0; i < wallContainer.transform.childCount; i++)
         {
             Transform child = wallContainer.transform.GetChild(i);
-            if (child.position.y > playerYPosition)
+            if (child.position.y > playerPosition.y)
             {
-                child.gameObject.layer = 6; // terrain
+                child.gameObject.layer = 6; // terrain, so sprite is overlaying
             }
             else
-                child.gameObject.layer = 0; // default
-            child.gameObject.GetComponent<MeshRenderer>().material.color = new Color(1f, 1f, 1f, 0f);
-
-
+            {
+                child.gameObject.layer = 0; // default so wall is over sprite
+            }
         }
 
     }

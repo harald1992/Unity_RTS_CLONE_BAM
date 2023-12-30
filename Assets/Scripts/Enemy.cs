@@ -38,7 +38,7 @@ public class Enemy : MonoBehaviour
         else
         {
             Vector3 diff = target.position - gameObject.transform.position;
-            if (diff.magnitude < 1)
+            if (diff.magnitude < 1f)
             {
                 unitScript.Attack();
             }
