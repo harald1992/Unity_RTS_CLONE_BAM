@@ -50,8 +50,8 @@ public class Unit : MonoBehaviour
     private void Update()
     {
         RayCast();
-        ChangeHealth(0.1F * Time.deltaTime);
-        ChangeMana(0.1F * Time.deltaTime);
+        ChangeHealth(0.2f * Time.deltaTime);
+        ChangeMana(0.2f * Time.deltaTime);
     }
 
     public void ChangeHealth(float amount)

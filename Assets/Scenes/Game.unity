@@ -1608,6 +1608,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4367615230122458037, guid: e9d4d04cbf12f4f45995fecd931dff13, type: 3}
+      propertyPath: objectPrefabs.Array.size
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4367615230122458037, guid: e9d4d04cbf12f4f45995fecd931dff13, type: 3}
+      propertyPath: objectPrefabs.Array.data[8]
+      value: 
+      objectReference: {fileID: 2431424443545715999, guid: 2ab001472f050429aadca6d30e81423d, type: 3}
     - target: {fileID: 5430097099849443286, guid: e9d4d04cbf12f4f45995fecd931dff13, type: 3}
       propertyPath: m_Name
       value: GameManager
@@ -1652,6 +1660,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5706945690360333145, guid: e9d4d04cbf12f4f45995fecd931dff13, type: 3}
+      propertyPath: gameObjectPrefabs.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5706945690360333145, guid: e9d4d04cbf12f4f45995fecd931dff13, type: 3}
+      propertyPath: gameObjectPrefabs.Array.data[2]
+      value: 
+      objectReference: {fileID: 2431424443545715999, guid: 2ab001472f050429aadca6d30e81423d, type: 3}
     - target: {fileID: 8873210589884992607, guid: e9d4d04cbf12f4f45995fecd931dff13, type: 3}
       propertyPath: roomContainer
       value: 

@@ -80,6 +80,8 @@ public class TerrainCreator : MonoBehaviour
             }
             else
                 child.gameObject.layer = 0; // default
+            child.gameObject.GetComponent<MeshRenderer>().material.color = new Color(1f, 1f, 1f, 0f);
+
 
         }
 
