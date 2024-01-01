@@ -10,6 +10,9 @@ public abstract class AbstractDungeonGenerator : MonoBehaviour
     protected TerrainCreator terrainCreator = null;
 
     [SerializeField]
+    protected WallGenerator wallGenerator;
+
+    [SerializeField]
     protected Vector2Int startPosition = Vector2Int.zero;
 
     [SerializeField]

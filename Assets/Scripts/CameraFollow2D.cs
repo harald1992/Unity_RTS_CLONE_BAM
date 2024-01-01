@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class CameraFollow2D : MonoBehaviour
@@ -15,12 +16,21 @@ public class CameraFollow2D : MonoBehaviour
     {
         if (target != null)
         {
-            // Vector3 desiredPosition = target.position + offset;
-            // Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
-            // transform.position = new Vector3(smoothedPosition.x, smoothedPosition.y, -10);
-            transform.position = new Vector3(target.position.x, target.position.y - 5f, transform.position.z);
-            transform.rotation = Quaternion.Euler(-30f, 0f, 0f);
+            StandardView();
+            // IsometricView();
         }
     }
 
+    private void StandardView()
+    {
+        transform.position = new Vector3(target.position.x, target.position.y - 5f, transform.position.z);
+        transform.rotation = Quaternion.Euler(-30f, 0f, 0f);
+    }
+
+    private void IsometricView()
+    {
+        transform.position = new Vector3(target.position.x, target.position.y - 5f, transform.position.z);
+        transform.rotation = Quaternion.Euler(-30f, 0f, -15f);
+        Player.instance.transform.rotation = Quaternion.Euler(0f, 0f, -15f);
+    }
 }

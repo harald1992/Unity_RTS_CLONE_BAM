@@ -1,5 +1,49 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &50541967809351011
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4575787025818122412}
+  - component: {fileID: 7919728938167100105}
+  m_Layer: 0
+  m_Name: WallGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4575787025818122412
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 50541967809351011}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5444409850368585491}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7919728938167100105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 50541967809351011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac6c1f36a7aa5439995bcd0991fdbae4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1537566804736882090
 GameObject:
   m_ObjectHideFlags: 0
@@ -45,6 +89,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   terrainCreator: {fileID: 8873210589884992607}
+  wallGenerator: {fileID: 7919728938167100105}
   startPosition: {x: 0, y: 0}
   enemyPrefabs:
   - {fileID: 4011096733036733146, guid: f8af26b0c7abe4491a04cae0e039e9ec, type: 3}
@@ -58,8 +103,9 @@ MonoBehaviour:
   - {fileID: 7053580511086829590, guid: 189e87d141a5749c9854349ed61baef2, type: 3}
   - {fileID: 4674810145569016483, guid: cd5f788c439194f9cbd38eb6aa9c84e8, type: 3}
   - {fileID: 6237987530939225252, guid: cec6a18d71a484a708d5e597e6d44764, type: 3}
-  corridorAmount: 6
-  corridorLength: 8
+  - {fileID: 2431424443545715999, guid: 2ab001472f050429aadca6d30e81423d, type: 3}
+  corridorAmount: 2
+  corridorLength: 10
   roomSize: 6
   roomPercent: 0.606
 --- !u!1 &1987924725837057886
@@ -109,6 +155,7 @@ MonoBehaviour:
   gameObjectPrefabs:
   - {fileID: 6237987530939225252, guid: cec6a18d71a484a708d5e597e6d44764, type: 3}
   - {fileID: 7379109949979450272, guid: a93df84f35f3d4ebab73616c18dbbf6b, type: 3}
+  - {fileID: 2431424443545715999, guid: 2ab001472f050429aadca6d30e81423d, type: 3}
   goldPrefabs:
   - {fileID: 268351392265824913, guid: c16573661937a4f229de4cd75ffadaa4, type: 3}
   - {fileID: 2649638377956853738, guid: a0dde75d2119847d485e32ff863dfd11, type: 3}
@@ -127,7 +174,7 @@ GameObject:
   - component: {fileID: 8873210589884992607}
   m_Layer: 0
   m_Name: TerrainCreator
-  m_TagString: Untagged
+  m_TagString: TerrainCreator
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -164,7 +211,18 @@ MonoBehaviour:
   wallContainer: {fileID: 0}
   corridorPrefab: {fileID: 6583384830995710056, guid: 8c8b94a4658f44292ac90caee4a8c1d1, type: 3}
   roomPrefab: {fileID: 472005562736869677, guid: 592bebdda5e1e49e6814b45e588e8261, type: 3}
-  wallPrefab: {fileID: 3240576754191620213, guid: d748cc5b6e6a34c3a8addcb67cbd1a08, type: 3}
+  wallPrefabs:
+  - {fileID: 2258982207353777413, guid: 9a9d2d3a1040b45049f01a68424c90ba, type: 3}
+  - {fileID: 200475470592693629, guid: d015bfe7957474fc7b0d7f91e2b5fb7e, type: 3}
+  - {fileID: 7459289277255370818, guid: 931d4d026d4444b54b42ec9132b1294e, type: 3}
+  - {fileID: 2951358365746435406, guid: 76dd9cc2364534b4b9a8c1fb9707bea8, type: 3}
+  - {fileID: 4075250719754040864, guid: d442563463fb841a89980ee3fa7348a7, type: 3}
+  - {fileID: 8388323783614393344, guid: b59293810851746b4b9baba219b28068, type: 3}
+  - {fileID: 4650985019170107387, guid: 7ede4b15058854eb3b6e8eb0f6b0b700, type: 3}
+  - {fileID: 4650669051122912795, guid: 92cd8b736486b4a5896bd62f3cacde22, type: 3}
+  - {fileID: 4062281836582553576, guid: b8c6e335e03b0431c8419c864d825c8c, type: 3}
+  - {fileID: 7085304401645421654, guid: 317939b7b2a894c53b1acbcb59f4f363, type: 3}
+  - {fileID: 5614190541615162547, guid: 8f4fe2b35527943af90dacf01f1f3168, type: 3}
 --- !u!1 &5430097099849443286
 GameObject:
   m_ObjectHideFlags: 0
@@ -201,6 +259,7 @@ Transform:
   - {fileID: 1498520407734973485}
   - {fileID: 2861791459961228624}
   - {fileID: 2484709108619163569}
+  - {fileID: 4575787025818122412}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5851104480108157025
