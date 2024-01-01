@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TerrainCreator : MonoBehaviour
@@ -11,7 +12,7 @@ public class TerrainCreator : MonoBehaviour
 
     public GameObject corridorPrefab;
     public GameObject roomPrefab;
-    public GameObject wallPrefab;
+    public List<GameObject> wallPrefabs;
 
 
     public void Clear()
@@ -27,6 +28,7 @@ public class TerrainCreator : MonoBehaviour
         {
             Transform child = ob.transform.GetChild(i);
 
+            // Destroy(child.gameObject);
             Destroy(child.gameObject);
         }
     }
@@ -37,18 +39,42 @@ public class TerrainCreator : MonoBehaviour
         {
             Vector3 cubePosition = new Vector3(position.x, position.y, 0);
             GameObject corridorTile = Instantiate(corridorPrefab, cubePosition, Quaternion.Euler(0f, 0f, 0f));
-            corridorTile.transform.parent = corridorContainer.transform;
+            // corridorTile.transform.parent = corridorContainer.transform;
+            corridorTile.transform.parent = wallContainer.transform;
+
         }
     }
 
-    public void PaintAllWalls(IEnumerable<Vector2Int> positions)
+    public void PaintWalls(HashSet<Vector2WithWallType> allWalls)
     {
-        foreach (var position in positions)
+
+
+        foreach (Vector2WithWallType vectorWithWallType in allWalls)
         {
-            Vector3 wallPosition = new Vector3(position.x, position.y, 0);
+            Vector3 wallPosition = vectorWithWallType.position;
+
+            GameObject wallPrefab = ConvertWallTypeToPrefab(vectorWithWallType.wallType);
             GameObject wall = Instantiate(wallPrefab, wallPosition, Quaternion.identity);
             wall.transform.parent = wallContainer.transform;
         }
+    }
+
+    private GameObject ConvertWallTypeToPrefab(WallType wallType)
+    {
+
+        string wallName = wallType switch
+        {
+            WallType.UP => "UpWall",
+            WallType.DOWN => "DownWall",
+            WallType.RIGHT => "RightWall",
+            WallType.LEFT => "LeftWall",
+            // WallType.RIGHT_DOWN => "RightDownWall",
+
+            _ => "DefaultWall",
+        };
+
+        GameObject wallPrefab = wallPrefabs.FirstOrDefault(obj => obj.name == wallName);
+        return wallPrefab;
     }
 
 

@@ -50,6 +50,7 @@ public class Unit : MonoBehaviour
     private void Update()
     {
         RayCast();
+        CastCone();
         ChangeHealth(0.2f * Time.deltaTime);
         ChangeMana(0.2f * Time.deltaTime);
     }
@@ -135,7 +136,32 @@ public class Unit : MonoBehaviour
         animator.SetFloat("moveY", 0);
     }
 
-    public void RayCast()
+
+    void CastCone()
+    {
+        // float radius = 1f;
+        // float maxDistance = 5f;
+        // int rayCount = 10;
+        // // float angleStep = 360f / rayCount;
+        float angleStep = 45f;
+        for (int i = -1; i <= 1; i++)
+        {
+            Vector2 direction = Quaternion.Euler(0f, 0f, i * angleStep) * Vector2.down;
+            Debug.Log(direction);
+            // RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, radius, direction, maxDistance);
+            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, 1f);
+            Debug.DrawLine(transform.position, new Vector2(transform.position.x + direction.x, transform.position.y + direction.y), Color.red, 0.1f);
+
+            foreach (RaycastHit2D hit in hits)
+            {
+                Debug.Log("Hit object: " + hit.collider.gameObject.name);
+                Debug.Log(hit.collider.gameObject.layer);
+                Debug.DrawLine(transform.position, hit.point, Color.yellow, 0f);
+            }
+        }
+    }
+
+    private void RayCast()
     {
         float size = 0.5f;
 

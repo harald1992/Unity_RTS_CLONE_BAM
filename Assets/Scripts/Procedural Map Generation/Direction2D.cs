@@ -21,7 +21,7 @@ public static class Direction2D
         new Vector2Int(-1,1),
     };
 
-    public static List<Vector2Int> EightDirectionsList = new()
+    public static List<Vector2Int> eightDirectionsList = new()
     {
         new Vector2Int(0,1),
         new Vector2Int(1,1),

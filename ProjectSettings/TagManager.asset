@@ -13,6 +13,7 @@ TagManager:
   - GoldStats
   - SpellPrefab
   - GameObjectContainer
+  - TerrainCreator
   layers:
   - Default
   - TransparentFX

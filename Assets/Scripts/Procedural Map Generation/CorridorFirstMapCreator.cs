@@ -30,7 +30,7 @@ public class CorridorFirstMapCreator : AbstractDungeonGenerator
         HashSet<Vector2Int> allWalkableTiles = new HashSet<Vector2Int>();
         allWalkableTiles.UnionWith(corridorPositions);
         allWalkableTiles.UnionWith(roomPositions);
-        WallGenerator.CreateWalls(allWalkableTiles, terrainCreator);
+        // WallGenerator.CreateWalls(allWalkableTiles, terrainCreator);
     }
 
     private List<Vector2Int> FindAllDeadEnds(HashSet<Vector2Int> corridorPositions)
