@@ -50,7 +50,7 @@ public class Unit : MonoBehaviour
     private void Update()
     {
         RayCast();
-        CastCone();
+        // CastCone();
         ChangeHealth(0.2f * Time.deltaTime);
         ChangeMana(0.2f * Time.deltaTime);
     }

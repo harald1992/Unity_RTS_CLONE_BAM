@@ -14,6 +14,7 @@ TagManager:
   - SpellPrefab
   - GameObjectContainer
   - TerrainCreator
+  - CameraPivot
   layers:
   - Default
   - TransparentFX
@@ -45,8 +46,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - mousepositionSphere
+  - GroundColliderPlane
   m_SortingLayers:
   - name: Default
     uniqueID: 0

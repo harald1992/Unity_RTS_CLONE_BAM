@@ -16,21 +16,28 @@ public class CameraFollow2D : MonoBehaviour
     {
         if (target != null)
         {
-            StandardView();
-            // IsometricView();
+            // transform.position = new Vector3(target.position.x, target.position.y, transform.position.z);
+
+            // MildRotation();
+            IsometricView();
         }
     }
 
-    private void StandardView()
+    private void MildRotation()
     {
-        transform.position = new Vector3(target.position.x, target.position.y - 5f, transform.position.z);
+        transform.position = new Vector3(target.position.x, target.position.y, transform.position.z);
         transform.rotation = Quaternion.Euler(-30f, 0f, 0f);
     }
 
     private void IsometricView()
     {
-        transform.position = new Vector3(target.position.x, target.position.y - 5f, transform.position.z);
-        transform.rotation = Quaternion.Euler(-30f, 0f, -15f);
-        Player.instance.transform.rotation = Quaternion.Euler(0f, 0f, -15f);
+        transform.position = new Vector3(target.position.x, target.position.y, transform.position.z);
+        transform.rotation = Quaternion.Euler(-30f, -45f, 60f);
+        SpriteRenderer[] allSprites = FindObjectsOfType<SpriteRenderer>();
+        foreach (var sprite in allSprites)
+        {
+            sprite.gameObject.transform.rotation = Quaternion.Euler(-30, -45, 60f);
+
+        }
     }
 }

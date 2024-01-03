@@ -74,31 +74,14 @@ public class GameManager : MonoBehaviour
             PlayerStats.instance.CastSpell(4);
         }
 
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
-            ObjectInstantiator.instance.InstantiateFloatingTextAt("30", GetMousePosition2D(), Color.white);
         }
 
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            GameObject knightPrefab = Resources.Load<GameObject>("Prefabs/Units/Knight");
-            ObjectInstantiator.instance.InstantiatePlayer(knightPrefab, GetMousePosition2D());
-        }
 
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            GameObject knightPrefab = Resources.Load<GameObject>("Prefabs/Units/Skeleton");
-            ObjectInstantiator.instance.InstantiateEnemy(knightPrefab, GetMousePosition2D());
-        }
     }
 
-    private Vector2 GetMousePosition2D()
-    {
-        Vector3 mousePos = Input.mousePosition;
-        mousePos.z = -Camera.main.transform.position.z; // Adjusting the z coordinate
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(mousePos);
-        return mousePosition;
-    }
+
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {

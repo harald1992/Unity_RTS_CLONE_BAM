@@ -34,17 +34,16 @@ public class Player : MonoBehaviour
         unitScript.SetupHealthBar();
 
         gameObject.tag = "Player";
-        GameObject playerCamera = GameObject.FindWithTag("MainCamera");
-        if (playerCamera != null)
+        GameObject cameraPivot = GameObject.FindWithTag("CameraPivot");
+        if (cameraPivot != null)
         {
-            CameraFollow2D script = playerCamera.GetComponent<CameraFollow2D>();
+            CameraFollow2D script = cameraPivot.GetComponent<CameraFollow2D>();
             script.target = transform;
         }
     }
 
     private void Update()
     {
-
         if (unitScript.animator == null) { return; }
 
         MovementControls();
@@ -67,16 +66,10 @@ public class Player : MonoBehaviour
 
     private void ChangeOrientationOnMousePosition()
     {
-        Vector2 direction = UtilService.instance.GetMousePosition2D();
-        float moveX = direction.x - transform.position.x;
-        float moveY = direction.y - transform.position.y;
-
-        Vector3 difference = new Vector3(moveX, moveY, 0).normalized;
-
-        unitScript.animator.SetFloat("moveX", difference.x);
-        unitScript.animator.SetFloat("moveY", difference.y);
-        unitScript.animator.SetFloat("lastMoveX", moveX);
-        unitScript.animator.SetFloat("lastMoveY", moveY);
+        Vector3 mouseDirection_animator = MousePosition.instance.GetMousePositionFromUnrotatedCamera();
+        Vector3 difference_animator = (mouseDirection_animator - Camera.main.transform.position).normalized;
+        unitScript.animator.SetFloat("lastMoveX", difference_animator.x);
+        unitScript.animator.SetFloat("lastMoveY", difference_animator.y);
     }
 
     private void MovementOnRightClick()
@@ -92,17 +85,16 @@ public class Player : MonoBehaviour
 
         if (isRightClick)
         {
-            Vector2 direction = UtilService.instance.GetMousePosition2D();
-            float moveX = direction.x - transform.position.x;
-            float moveY = direction.y - transform.position.y;
+            Vector3 mouseDirection_animator = MousePosition.instance.GetMousePositionFromUnrotatedCamera();
+            Vector3 difference_animator = (mouseDirection_animator - Camera.main.transform.position).normalized;
+            unitScript.animator.SetFloat("lastMoveX", difference_animator.x);
+            unitScript.animator.SetFloat("lastMoveY", difference_animator.y);
+            unitScript.animator.SetFloat("moveX", difference_animator.x);
+            unitScript.animator.SetFloat("moveY", difference_animator.y);
 
-            Vector3 difference = new Vector3(moveX, moveY, 0).normalized;
-
-            unitScript.animator.SetFloat("moveX", difference.x);
-            unitScript.animator.SetFloat("moveY", difference.y);
-            unitScript.animator.SetFloat("lastMoveX", moveX);
-            unitScript.animator.SetFloat("lastMoveY", moveY);
-            transform.position += unitScript.moveSpeed * Time.deltaTime * difference;
+            Vector3 mousePosition = MousePosition.instance.GetMousePositionFromRotatedCamera();
+            Vector3 difference = mousePosition - transform.position;
+            transform.position += unitScript.moveSpeed * Time.deltaTime * difference.normalized;
         }
         else
         {
