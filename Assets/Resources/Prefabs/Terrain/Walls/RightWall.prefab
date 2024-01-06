@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4632163246973633855}
   - component: {fileID: 3309237862968177986}
   - component: {fileID: 2796692540073353943}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LightBlocker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -138,7 +138,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7659400987807630195}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RightWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -174,7 +174,7 @@ GameObject:
   - component: {fileID: 7884295354129593355}
   - component: {fileID: 2896929043943482890}
   - component: {fileID: 5996336041541348829}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RightWallTexture
   m_TagString: Untagged
   m_Icon: {fileID: 0}

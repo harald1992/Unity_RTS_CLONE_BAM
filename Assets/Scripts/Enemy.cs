@@ -7,10 +7,8 @@ public class Enemy : MonoBehaviour
 {
     private Unit unitScript;
 
-
     public Transform target;
 
-    // Start is called before the first frame update
     protected void Start()
     {
         unitScript = gameObject.GetComponent<Unit>();
@@ -30,7 +28,6 @@ public class Enemy : MonoBehaviour
 
     protected void Update()
     {
-
         if (target == null)
         {
             SetTarget();

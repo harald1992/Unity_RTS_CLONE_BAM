@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6612677563162433945}
   - component: {fileID: 1300603397280810884}
   - component: {fileID: 6644997445799099702}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LeftWallTexture
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -138,7 +138,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 676783592278697832}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LeftWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -174,7 +174,7 @@ GameObject:
   - component: {fileID: 6215800676316102617}
   - component: {fileID: 1238584894120147432}
   - component: {fileID: 6854306366895293854}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LightBlocker
   m_TagString: Untagged
   m_Icon: {fileID: 0}

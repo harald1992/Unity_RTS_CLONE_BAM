@@ -134,7 +134,7 @@ public class CorridorFirstMapCreator : AbstractDungeonGenerator
         HashSet<Vector2Int> roomPath = CreateTorchRoom(position);
         terrainCreator.PaintUniqueRoom(roomPath);
 
-        GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Units/Skeleton");
+        // GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Units/Skeleton");
         ObjectInstantiator.instance.InstantiatePlayer(playerPrefab, position);
 
         GameObject monolith = Resources.Load<GameObject>("Prefabs/Objects/Monolith_Exit");

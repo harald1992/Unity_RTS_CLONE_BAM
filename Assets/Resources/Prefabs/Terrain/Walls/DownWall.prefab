@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3418544372309346171}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DownWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 3565352427592752765}
   - component: {fileID: 2321099384542853549}
   - component: {fileID: 6123330910555652113}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LightBlocker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -174,7 +174,7 @@ GameObject:
   - component: {fileID: 4888443347791043363}
   - component: {fileID: 9105968093699733379}
   - component: {fileID: 2577435941093138125}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DownWallTexture
   m_TagString: Untagged
   m_Icon: {fileID: 0}

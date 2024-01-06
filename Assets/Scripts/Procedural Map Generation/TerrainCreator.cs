@@ -99,7 +99,7 @@ public class TerrainCreator : MonoBehaviour
     {
         foreach (var position in roomPositions)
         {
-            Vector3 tilePosition = new Vector3(position.x, position.y, -0.1f);
+            Vector3 tilePosition = new Vector3(position.x, position.y, 0.1f);
             GameObject roomTile = Instantiate(roomPrefab, tilePosition, Quaternion.identity);
             roomTile.transform.parent = roomContainer.transform;
         }

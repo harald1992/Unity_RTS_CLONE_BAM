@@ -33,11 +33,11 @@ public class CameraFollow2D : MonoBehaviour
     {
         transform.position = new Vector3(target.position.x, target.position.y, transform.position.z);
         transform.rotation = Quaternion.Euler(-30f, -45f, 60f);
-        SpriteRenderer[] allSprites = FindObjectsOfType<SpriteRenderer>();
-        foreach (var sprite in allSprites)
-        {
-            sprite.gameObject.transform.rotation = Quaternion.Euler(-30, -45, 60f);
+        // SpriteRenderer[] allSprites = FindObjectsOfType<SpriteRenderer>();
+        // foreach (var sprite in allSprites)
+        // {
+        //     sprite.gameObject.transform.rotation = Quaternion.Euler(-30, -45, 60f);
 
-        }
+        // }
     }
 }

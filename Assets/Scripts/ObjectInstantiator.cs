@@ -37,6 +37,12 @@ public class ObjectInstantiator : MonoBehaviour
             newPosition -= totalOffset;
         }
         ob.transform.position = newPosition;
+
+        if (ob.GetComponent<SpriteRenderer>() == true)
+        {
+            ob.transform.rotation = Quaternion.Euler(-30, -45, 60f);
+        }
+
         return ob;
     }
 
@@ -78,6 +84,12 @@ public class ObjectInstantiator : MonoBehaviour
             newPosition -= totalOffset;
         }
         ob.transform.position = newPosition;
+
+        if (ob.GetComponent<SpriteRenderer>() == true)
+        {
+            ob.transform.rotation = Quaternion.Euler(-30, -45, 60f);
+        }
+
         GameObject container = GameObject.FindWithTag("GameObjectContainer");
         ob.transform.parent = container.transform;
         return ob;

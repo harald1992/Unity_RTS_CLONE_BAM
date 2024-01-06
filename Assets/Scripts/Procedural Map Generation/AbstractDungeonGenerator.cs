@@ -16,6 +16,10 @@ public abstract class AbstractDungeonGenerator : MonoBehaviour
     protected Vector2Int startPosition = Vector2Int.zero;
 
     [SerializeField]
+    protected GameObject playerPrefab;
+
+
+    [SerializeField]
     protected List<GameObject> enemyPrefabs;
 
     [SerializeField]

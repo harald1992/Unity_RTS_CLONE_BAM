@@ -6,10 +6,12 @@ public class Player : MonoBehaviour
     public Unit unitScript;
 
     public static Player instance;
-    public string areaTransitionName;   // exit just used changed by AreaExit&AreaEntrance scripts
+    // public string areaTransitionName;   // exit just used changed by AreaExit&AreaEntrance scripts
 
 
     private bool isRightClick;
+
+    Rigidbody rb;
 
     private void Start()
     {
@@ -22,16 +24,20 @@ public class Player : MonoBehaviour
             Destroy(gameObject);
         }
 
-        unitScript = gameObject.GetComponent<Unit>();
-        unitScript.maxHp = 25f;
-        unitScript.currentHp = 25f;
-        unitScript.maxMp = 10f;
-        unitScript.currentMp = 10f;
-        unitScript.attack = 2f;
+        rb = GetComponent<Rigidbody>();
 
-        GameEvents.instance.PlayerChanged();
 
-        unitScript.SetupHealthBar();
+
+        // unitScript = gameObject.GetComponent<Unit>();
+        // unitScript.maxHp = 25f;
+        // unitScript.currentHp = 25f;
+        // unitScript.maxMp = 10f;
+        // unitScript.currentMp = 10f;
+        // unitScript.attack = 2f;
+
+        // GameEvents.instance.PlayerChanged();
+
+        // unitScript.SetupHealthBar();
 
         gameObject.tag = "Player";
         GameObject cameraPivot = GameObject.FindWithTag("CameraPivot");
@@ -42,9 +48,14 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+
+    }
+
     private void Update()
     {
-        if (unitScript.animator == null) { return; }
+        // if (unitScript.animator == null) { return; }
 
         MovementControls();
     }
@@ -60,16 +71,23 @@ public class Player : MonoBehaviour
         {
             // MovementOnArrowKeys();
         }
-        ChangeOrientationOnMousePosition();
+        // ChangeOrientationOnMousePosition();
         MovementOnRightClick();
     }
 
     private void ChangeOrientationOnMousePosition()
     {
-        Vector3 mouseDirection_animator = MousePosition.instance.GetMousePositionFromUnrotatedCamera();
-        Vector3 difference_animator = (mouseDirection_animator - Camera.main.transform.position).normalized;
-        unitScript.animator.SetFloat("lastMoveX", difference_animator.x);
-        unitScript.animator.SetFloat("lastMoveY", difference_animator.y);
+        // 3D
+        Vector3 mousePosition = MousePosition.instance.GetMousePositionFromRotatedCamera();
+        Vector3 direction = mousePosition - transform.position;
+        transform.up = direction;
+
+
+        //2D
+        // Vector3 mouseDirection_animator = MousePosition.instance.GetMousePositionFromUnrotatedCamera();
+        // Vector3 difference_animator = (mouseDirection_animator - Camera.main.transform.position).normalized;
+        // unitScript.animator.SetFloat("lastMoveX", difference_animator.x);
+        // unitScript.animator.SetFloat("lastMoveY", difference_animator.y);
     }
 
     private void MovementOnRightClick()
@@ -85,21 +103,28 @@ public class Player : MonoBehaviour
 
         if (isRightClick)
         {
-            Vector3 mouseDirection_animator = MousePosition.instance.GetMousePositionFromUnrotatedCamera();
-            Vector3 difference_animator = (mouseDirection_animator - Camera.main.transform.position).normalized;
-            unitScript.animator.SetFloat("lastMoveX", difference_animator.x);
-            unitScript.animator.SetFloat("lastMoveY", difference_animator.y);
-            unitScript.animator.SetFloat("moveX", difference_animator.x);
-            unitScript.animator.SetFloat("moveY", difference_animator.y);
+            Debug.Log("SHould move right");
+            /* 3D */
+            rb.AddForce(Vector3.right);
 
-            Vector3 mousePosition = MousePosition.instance.GetMousePositionFromRotatedCamera();
-            Vector3 difference = mousePosition - transform.position;
-            transform.position += unitScript.moveSpeed * Time.deltaTime * difference.normalized;
+
+
+            /* 2D */
+            // Vector3 mouseDirection_animator = MousePosition.instance.GetMousePositionFromUnrotatedCamera();
+            // Vector3 difference_animator = (mouseDirection_animator - Camera.main.transform.position).normalized;
+            // unitScript.animator.SetFloat("lastMoveX", difference_animator.x);
+            // unitScript.animator.SetFloat("lastMoveY", difference_animator.y);
+            // unitScript.animator.SetFloat("moveX", difference_animator.x);
+            // unitScript.animator.SetFloat("moveY", difference_animator.y);
+
+            // Vector3 mousePosition = MousePosition.instance.GetMousePositionFromRotatedCamera();
+            // Vector3 difference = mousePosition - transform.position;
+            // transform.position += unitScript.moveSpeed * Time.deltaTime * difference.normalized;
         }
         else
         {
-            unitScript.animator.SetFloat("moveX", 0);
-            unitScript.animator.SetFloat("moveY", 0);
+            // unitScript.animator.SetFloat("moveX", 0);
+            // unitScript.animator.SetFloat("moveY", 0);
         }
 
     }

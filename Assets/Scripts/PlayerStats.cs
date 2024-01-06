@@ -117,7 +117,11 @@ public class PlayerStats : MonoBehaviour
 
         UpdateUI();
         UpdateSpellContainers();
+    }
 
+    private void OnDisable()    // also called when gameobject is destroyed
+    {
+        GameEvents.instance.onPlayerChanged -= UpdateUI; // unsubscribe
     }
 
     public void IncreaseGold(int goldAmount)
