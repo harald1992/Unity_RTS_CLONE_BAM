@@ -21,7 +21,7 @@ public class Enemy3D : MonoBehaviour
     {
         if (target == null)
         {
-            target = FindObjectOfType<Player>()?.transform; // Attempt to find a new target
+            // target = FindObjectOfType<Player>()?.transform; // Attempt to find a new target
         }
     }
 
@@ -61,7 +61,7 @@ public class Enemy3D : MonoBehaviour
 
 
             Vector3 direction = target.position - transform.position;
-            transform.up = direction;
+            // transform.up = direction;
 
             if (direction.magnitude <= 1 && IsAttacking() == false)
             {

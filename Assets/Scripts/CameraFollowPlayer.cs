@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class CameraFollow2D : MonoBehaviour
+public class CameraFollowPlayer : MonoBehaviour
 {
     public Transform target; // Reference to the player's transform
                              // public float smoothSpeed = 0.125f; // Adjust this value to set the smoothness of the camera follow
@@ -16,10 +16,10 @@ public class CameraFollow2D : MonoBehaviour
     {
         if (target != null)
         {
-            // transform.position = new Vector3(target.position.x, target.position.y, transform.position.z);
+            transform.position = target.position;
 
             // MildRotation();
-            IsometricView();
+            // IsometricView();
         }
     }
 

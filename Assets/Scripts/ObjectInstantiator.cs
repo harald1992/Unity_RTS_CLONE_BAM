@@ -1,5 +1,4 @@
 using System;
-// using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -24,20 +23,21 @@ public class ObjectInstantiator : MonoBehaviour
         }
     }
 
-    private GameObject InstantiateUnit(GameObject objectPrefab, Vector2 position)
+    private GameObject InstantiateUnit(GameObject objectPrefab, Vector3 position)
     {
         GameObject ob = Instantiate(objectPrefab);
-        Vector3 newPosition = new Vector3(position.x, position.y, 0);
+        // Vector3 newPosition = new Vector3(position.x, position.y, 0);
 
         // compensate for collider, so object spawns with the collider in the middle of the tile.
         CircleCollider2D collider = ob.GetComponent<CircleCollider2D>();
         if (collider != null)
         {
             Vector3 totalOffset = CalculateOffsetPlusRadius(collider.offset.x, collider.offset.y, collider.radius);
-            newPosition -= totalOffset;
+            position -= totalOffset;
         }
-        ob.transform.position = newPosition;
+        ob.transform.position = position;
 
+        // TODO: check if these are still needed in 3D
         if (ob.GetComponent<SpriteRenderer>() == true)
         {
             ob.transform.rotation = Quaternion.Euler(-30, -45, 60f);
@@ -46,11 +46,11 @@ public class ObjectInstantiator : MonoBehaviour
         return ob;
     }
 
-    public GameObject InstantiatePlayer(GameObject objectPrefab, Vector2 position)
+    public GameObject InstantiatePlayer(GameObject objectPrefab, Vector3 position)
     {
         if (Player.instance != null)
         {
-            Player.instance.transform.position = (Vector3)position;
+            Player.instance.transform.position = position;
             return Player.instance.gameObject;
         }
         else
@@ -58,11 +58,14 @@ public class ObjectInstantiator : MonoBehaviour
             GameObject ob = InstantiateUnit(objectPrefab, position);
             ob.AddComponent<Player>();
             ob.name = "Player";
+            ob.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
             return ob;
         }
+
+
     }
 
-    public GameObject InstantiateEnemy(GameObject objectPrefab, Vector2 position)
+    public GameObject InstantiateEnemy(GameObject objectPrefab, Vector3 position)
     {
         GameObject ob = InstantiateUnit(objectPrefab, position);
         ob.AddComponent<Enemy>();
@@ -71,20 +74,22 @@ public class ObjectInstantiator : MonoBehaviour
         return ob;
     }
 
-    public GameObject InstantiateObject(GameObject objectPrefab, Vector2 position)
+    public GameObject InstantiateObject(GameObject objectPrefab, Vector3 position)
     {
         GameObject ob = Instantiate(objectPrefab);
-        Vector3 newPosition = new Vector3(position.x, position.y, 0);
 
         // compensate for collider, so object spawns with the collider in the middle of the tile.
         CircleCollider2D collider = ob.GetComponent<CircleCollider2D>();
         if (collider != null)
         {
+            // TODO: check if still needed with 3D
             Vector3 totalOffset = CalculateOffsetPlusRadius(collider.offset.x, collider.offset.y, collider.radius);
-            newPosition -= totalOffset;
+            position -= totalOffset;
         }
-        ob.transform.position = newPosition;
+        ob.transform.position = position;
 
+
+        // TODO: check if these are still needed in 3D
         if (ob.GetComponent<SpriteRenderer>() == true)
         {
             ob.transform.rotation = Quaternion.Euler(-30, -45, 60f);
@@ -96,7 +101,7 @@ public class ObjectInstantiator : MonoBehaviour
     }
 
 
-    public void InstantiateFloatingTextAt(string text, Vector2 position, Color color)
+    public void InstantiateFloatingTextAt(string text, Vector3 position, Color color)
     {
         GameObject floatingTextPrefab = Resources.Load<GameObject>("Prefabs/UI/FloatingText");
 
@@ -108,6 +113,7 @@ public class ObjectInstantiator : MonoBehaviour
     }
 
 
+    // TODO: check if still needed in 3D
     private Vector3 CalculateOffsetPlusRadius(float xOffset, float yOffset, float radius)
     {
         Vector3 totalOffset = Vector3.zero;

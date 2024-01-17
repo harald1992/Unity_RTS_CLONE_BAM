@@ -28,26 +28,23 @@ public class TerrainCreator : MonoBehaviour
         {
             Transform child = ob.transform.GetChild(i);
 
-            // Destroy(child.gameObject);
             Destroy(child.gameObject);
         }
     }
 
-    public void PaintAllCorridors(IEnumerable<Vector2Int> tilePositions)
+    public void PaintAllCorridors(IEnumerable<Vector3Int> tilePositions)
     {
         foreach (var position in tilePositions)
         {
-            Vector3 cubePosition = new Vector3(position.x, position.y, 0);
-            GameObject corridorTile = Instantiate(corridorPrefab, cubePosition, Quaternion.Euler(0f, 0f, 0f));
-            // corridorTile.transform.parent = corridorContainer.transform;
+            GameObject corridorTile = Instantiate(corridorPrefab, position, Quaternion.identity);
             corridorTile.transform.parent = corridorContainer.transform;
 
         }
     }
 
-    public void PaintWalls(HashSet<Vector2WithWallType> allWalls)
+    public void PaintWalls(HashSet<Vector3WithWallType> allWalls)
     {
-        foreach (Vector2WithWallType vectorWithWallType in allWalls)
+        foreach (Vector3WithWallType vectorWithWallType in allWalls)
         {
             Vector3 wallPosition = vectorWithWallType.position;
 
@@ -55,13 +52,9 @@ public class TerrainCreator : MonoBehaviour
             Vector3 offSet = wallPrefab.transform.position;
 
             GameObject wall = Instantiate(wallPrefab, wallPosition + offSet, Quaternion.identity);
+
+            // GameObject wall = Instantiate(wallPrefab, wallPosition + offSet, Quaternion.Euler(90f, 0, 0));
             wall.transform.parent = wallContainer.transform;
-
-
-            // GameObject blackoverlay = wallPrefabs.FirstOrDefault(obj => obj.name == "WallBlackOverlay");
-            // Vector3 overlayOffset = blackoverlay.transform.position;
-            // GameObject blackoverlayObject = Instantiate(blackoverlay, wallPosition + overlayOffset, Quaternion.identity);
-            // blackoverlayObject.transform.parent = wall.transform;
         }
     }
 
@@ -95,15 +88,16 @@ public class TerrainCreator : MonoBehaviour
     }
 
 
-    public void PaintUniqueRoom(HashSet<Vector2Int> roomPositions)
+    public void PaintUniqueRoom(HashSet<Vector3Int> roomPositions)
     {
         foreach (var position in roomPositions)
         {
-            Vector3 tilePosition = new Vector3(position.x, position.y, 0.1f);
+            Vector3 tilePosition = new(position.x, 0.1f, position.z);
             GameObject roomTile = Instantiate(roomPrefab, tilePosition, Quaternion.identity);
             roomTile.transform.parent = roomContainer.transform;
         }
     }
+
 
 
     private void Update()

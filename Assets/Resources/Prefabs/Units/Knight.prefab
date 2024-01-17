@@ -52,6 +52,8 @@ MonoBehaviour:
   animationTimeAttack: 0.7
   maxHp: 5
   currentHp: 5
+  maxMp: 0
+  currentMp: 0
   attack: 2
   moveSpeed: 4
   animator: {fileID: 0}

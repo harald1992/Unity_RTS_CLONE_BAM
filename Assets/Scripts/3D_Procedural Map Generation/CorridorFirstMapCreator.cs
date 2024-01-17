@@ -13,8 +13,8 @@ public class CorridorFirstMapCreator : AbstractDungeonGenerator
     protected override void RunProceduralGeneration()
     {
         ClearMap();
-        HashSet<Vector2Int> corridorPositions = new HashSet<Vector2Int>();
-        HashSet<Vector2Int> roomPositions = new HashSet<Vector2Int>();
+        HashSet<Vector3Int> corridorPositions = new();
+        HashSet<Vector3Int> roomPositions = new();
 
         // create corridors and add the ends to roompositions
         CorridorMapWalk(corridorPositions, roomPositions);
@@ -22,25 +22,26 @@ public class CorridorFirstMapCreator : AbstractDungeonGenerator
         terrainCreator.PaintAllCorridors(corridorPositions);
 
         // Create roomposition at every dead end, for if the mapwalk walked back the same direction.
-        List<Vector2Int> allDeadEnds = FindAllDeadEnds(corridorPositions);
+        List<Vector3Int> allDeadEnds = FindAllDeadEnds(corridorPositions);
         roomPositions.UnionWith(allDeadEnds);
 
         CreateRooms(roomPositions);
 
-        HashSet<Vector2Int> allWalkableTiles = new HashSet<Vector2Int>();
+        HashSet<Vector3Int> allWalkableTiles = new();
         allWalkableTiles.UnionWith(corridorPositions);
         allWalkableTiles.UnionWith(roomPositions);
+
         wallGenerator.CreateWalls(allWalkableTiles, terrainCreator);
     }
 
-    private List<Vector2Int> FindAllDeadEnds(HashSet<Vector2Int> corridorPositions)
+    private List<Vector3Int> FindAllDeadEnds(HashSet<Vector3Int> corridorPositions)
     {
-        List<Vector2Int> deadEnds = new List<Vector2Int>();
+        List<Vector3Int> deadEnds = new();
 
         foreach (var position in corridorPositions)
         {
             int neighboursCount = 0;
-            foreach (var direction in Direction2D.cardinalDirectionsList)
+            foreach (var direction in Direction3D.cardinalDirectionsList)
             {
                 if (corridorPositions.Contains(position + direction))
                 {
@@ -57,15 +58,17 @@ public class CorridorFirstMapCreator : AbstractDungeonGenerator
         return deadEnds;
     }
 
-    protected void CorridorMapWalk(HashSet<Vector2Int> floorPositions, HashSet<Vector2Int> roomPositions)
+    protected void CorridorMapWalk(HashSet<Vector3Int> floorPositions, HashSet<Vector3Int> roomPositions)
     {
         var currentPosition = startPosition;
         floorPositions.Add(currentPosition);
         roomPositions.Add(currentPosition);
+        Vector3Int lastDirection = Vector3Int.zero;
 
         for (int i = 0; i < corridorAmount; i++)
         {
-            HashSet<Vector2Int> path = ProceduralGenerationAlgorithms.WalkRandomCorridor(currentPosition, corridorLength);
+            (HashSet<Vector3Int> path, Vector3Int _lastDirection) = ProceduralGenerationAlgorithms.WalkRandomCorridor(currentPosition, corridorLength, lastDirection);
+            lastDirection = _lastDirection;
             currentPosition = path.ElementAt(path.Count - 1);
 
             bool isCreateRoom = Random.Range(0f, 1f) < roomPercent;
@@ -78,13 +81,13 @@ public class CorridorFirstMapCreator : AbstractDungeonGenerator
         }
     }
 
-    private void CreateRooms(HashSet<Vector2Int> roomPositions)
+    private void CreateRooms(HashSet<Vector3Int> roomPositions)
     {
-        HashSet<Vector2Int> newPositions = new HashSet<Vector2Int>();
+        HashSet<Vector3Int> newPositions = new();
 
         for (int i = 0; i < roomPositions.Count; i++)
         {
-            HashSet<Vector2Int> path;
+            HashSet<Vector3Int> path;
             if (i == 0)
             {
                 path = CreatePlayerRoom(roomPositions.ElementAt(i));
@@ -119,9 +122,9 @@ public class CorridorFirstMapCreator : AbstractDungeonGenerator
         roomPositions.UnionWith(newPositions);
     }
 
-    private HashSet<Vector2Int> CreateExitRoom(Vector2Int position)
+    private HashSet<Vector3Int> CreateExitRoom(Vector3Int position)
     {
-        HashSet<Vector2Int> roomPath = CreateTorchRoom(position);
+        HashSet<Vector3Int> roomPath = CreateTorchRoom(position, 5, 5);
         terrainCreator.PaintUniqueRoom(roomPath);
         GameObject monolithEntrance = Resources.Load<GameObject>("Prefabs/Objects/Monolith_Entrance_0");
         ObjectInstantiator.instance.InstantiateObject(monolithEntrance, position);
@@ -129,9 +132,9 @@ public class CorridorFirstMapCreator : AbstractDungeonGenerator
         return roomPath;
     }
 
-    private HashSet<Vector2Int> CreatePlayerRoom(Vector2Int position)
+    private HashSet<Vector3Int> CreatePlayerRoom(Vector3Int position)
     {
-        HashSet<Vector2Int> roomPath = CreateTorchRoom(position);
+        HashSet<Vector3Int> roomPath = CreateTorchRoom(position, 5, 5);
         terrainCreator.PaintUniqueRoom(roomPath);
 
         // GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Units/Skeleton");
@@ -143,11 +146,11 @@ public class CorridorFirstMapCreator : AbstractDungeonGenerator
         return roomPath;
     }
 
-    private HashSet<Vector2Int> CreateLibrary(Vector2Int position)
+    private HashSet<Vector3Int> CreateLibrary(Vector3Int position)
     {
         int xSize = 7;
-        int ySize = 7;
-        HashSet<Vector2Int> roomPath = ProceduralGenerationAlgorithms.CreateRoom(position, xSize, ySize);
+        int zSize = 7;
+        HashSet<Vector3Int> roomPath = CreateTorchRoom(position, xSize, zSize);
 
         terrainCreator.PaintUniqueRoom(roomPath);
         GameObject rostrumPrefab = ObjectInstantiator.instance.GetPrefabByName("Rostrum_With_Book_Parent");
@@ -156,11 +159,11 @@ public class CorridorFirstMapCreator : AbstractDungeonGenerator
         return roomPath;
     }
 
-    private HashSet<Vector2Int> CreateTreasury(Vector2Int position)
+    private HashSet<Vector3Int> CreateTreasury(Vector3Int position)
     {
-        int xSize = 5;
-        int ySize = 5;
-        HashSet<Vector2Int> roomPath = ProceduralGenerationAlgorithms.CreateRoom(position, xSize, ySize);
+        int xSize = 7;
+        int zSize = 7;
+        HashSet<Vector3Int> roomPath = CreateTorchRoom(position, xSize, zSize);
 
         terrainCreator.PaintUniqueRoom(roomPath);
         GameObject goldPrefab = ObjectInstantiator.instance.GetRandomGoldPrefab();
@@ -175,38 +178,43 @@ public class CorridorFirstMapCreator : AbstractDungeonGenerator
         return roomPath;
     }
 
-    private HashSet<Vector2Int> CreateTorchRoom(Vector2Int position)
+    private HashSet<Vector3Int> CreateTorchRoom(Vector3Int position, int xSize, int zSize)
     {
-        int xSize = 7;
-        int ySize = 7;
-        HashSet<Vector2Int> roomPath = ProceduralGenerationAlgorithms.CreateRoom(position, xSize, ySize);
+        HashSet<Vector3Int> roomPath = ProceduralGenerationAlgorithms.CreateRoom(position, xSize, zSize);
+        Vector3 leftTop = roomPath.ElementAt(0);
+        Vector3 rightTop = roomPath.ElementAt(xSize - 1);
+        Vector3 leftBottom = roomPath.ElementAt(roomPath.Count - xSize);
+        Vector3 rightBottom = roomPath.ElementAt(roomPath.Count - 1);
+        leftTop += new Vector3(0.5f, 0.15f, 0.5f);
+        rightTop += new Vector3(-0.5f, 0.15f, 0.5f);
+        leftBottom += new Vector3(0.5f, 0.15f, -0.5f);
+        rightBottom += new Vector3(-0.5f, 0.15f, -0.5f);
 
-        Vector2Int leftTop = roomPath.ElementAt(0);
-        Vector2Int rightTop = roomPath.ElementAt(xSize - 1);
-        Vector2Int leftBottom = roomPath.ElementAt(roomPath.Count - xSize);
-        Vector2Int rightBottom = roomPath.ElementAt(roomPath.Count - 1);
 
-        GameObject torchPrefab = ObjectInstantiator.instance.GetPrefabByName("Torch");
-        ObjectInstantiator.instance.InstantiateObject(torchPrefab, leftTop);
-        ObjectInstantiator.instance.InstantiateObject(torchPrefab, rightTop);
-        ObjectInstantiator.instance.InstantiateObject(torchPrefab, leftBottom);
-        ObjectInstantiator.instance.InstantiateObject(torchPrefab, rightBottom);
+
+
+
+        // GameObject torchPrefab = ObjectInstantiator.instance.GetPrefabByName("Candlestick_Floor_02_Lit");
+        // ObjectInstantiator.instance.InstantiateObject(torchPrefab, leftTop);
+        // ObjectInstantiator.instance.InstantiateObject(torchPrefab, rightTop);
+        // ObjectInstantiator.instance.InstantiateObject(torchPrefab, leftBottom);
+        // ObjectInstantiator.instance.InstantiateObject(torchPrefab, rightBottom);
         return roomPath;
     }
 
-    private HashSet<Vector2Int> CreateStandardRoom(Vector2Int position)
+    private HashSet<Vector3Int> CreateStandardRoom(Vector3Int position)
     {
         int xSize = Random.Range(5, 9);
         if (xSize % 2 == 0)
         {
             xSize++;
         }
-        int ySize = Random.Range(5, 9);
-        if (ySize % 2 == 0)
+        int zSize = Random.Range(5, 9);
+        if (zSize % 2 == 0)
         {
-            ySize++;
+            zSize++;
         }
-        HashSet<Vector2Int> path = ProceduralGenerationAlgorithms.CreateRoom(position, xSize, ySize);
+        HashSet<Vector3Int> path = CreateTorchRoom(position, xSize, zSize);
 
         terrainCreator.PaintUniqueRoom(path);
 

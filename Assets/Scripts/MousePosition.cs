@@ -53,7 +53,7 @@ public class MousePosition : MonoBehaviour
             _worldPositionRotatedCamera = hitData.point;
         }
 
-        _worldPositionRotatedCamera.z = 0;
+        _worldPositionRotatedCamera.y = 0;
         transform.position = _worldPositionRotatedCamera;
 
         return _worldPositionRotatedCamera;

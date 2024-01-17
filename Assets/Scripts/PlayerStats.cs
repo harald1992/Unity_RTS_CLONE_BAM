@@ -40,7 +40,7 @@ public class PlayerStats : MonoBehaviour
     private List<GameObject> spellContainers;
 
     [SerializeField]
-    private List<GameObject> spellPrefabs = new List<GameObject>();
+    private List<GameObject> spellPrefabs = new();
 
 
     private void UpdateUI()

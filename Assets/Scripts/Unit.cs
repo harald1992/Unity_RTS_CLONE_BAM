@@ -45,11 +45,13 @@ public class Unit : MonoBehaviour
     {
         animator = gameObject.GetComponent<Animator>();
         currentHp = maxHp;
+
+        SetupHealthBar();
     }
 
     private void Update()
     {
-        RayCast();
+        // RayCast();
         // CastCone();
         ChangeHealth(0.2f * Time.deltaTime);
         ChangeMana(0.2f * Time.deltaTime);
@@ -165,10 +167,10 @@ public class Unit : MonoBehaviour
     {
         float size = 0.5f;
 
-        Vector3 direction = new Vector3(
-               animator.GetFloat("lastMoveX"),
-               animator.GetFloat("lastMoveY"),
-                 0).normalized * size;
+        // Vector3 direction = new Vector3(
+        //        animator.GetFloat("lastMoveX"),
+        //        animator.GetFloat("lastMoveY"),
+        //          0).normalized * size;
 
         Ray ray = new Ray(transform.position, direction);
         Debug.DrawRay(ray.origin, ray.direction, Color.white);

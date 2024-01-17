@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 public class WallGenerator : MonoBehaviour
 {
 
-    public void CreateWalls(HashSet<Vector2Int> floorPositions, TerrainCreator terrainCreator)
+    public void CreateWalls(HashSet<Vector3Int> floorPositions, TerrainCreator terrainCreator)
     {
         if (terrainCreator == null)
         {
@@ -18,33 +18,33 @@ public class WallGenerator : MonoBehaviour
 
 
 
-        HashSet<Vector2WithWallType> allWalls = NewFindWallsInDirections(floorPositions);
+        HashSet<Vector3WithWallType> allWalls = NewFindWallsInDirections(floorPositions);
 
         // remove duplicates
-        Vector2WithWallTypeComparer comparer = new Vector2WithWallTypeComparer();
+        Vector3WithWallTypeComparer comparer = new();
 
-        HashSet<Vector2WithWallType> uniqueWalls = new HashSet<Vector2WithWallType>(allWalls, comparer);
+        HashSet<Vector3WithWallType> uniqueWalls = new(allWalls, comparer);
 
         terrainCreator.PaintWalls(uniqueWalls);
     }
 
-    private static HashSet<Vector2WithWallType> NewFindWallsInDirections(HashSet<Vector2Int> floorPositions)
+    private static HashSet<Vector3WithWallType> NewFindWallsInDirections(HashSet<Vector3Int> floorPositions)
     {
-        HashSet<Vector2WithWallType> allWalls = new();
+        HashSet<Vector3WithWallType> allWalls = new();
         for (int i = 0; i < floorPositions.Count; i++)
         {
-            Vector2Int floorPosition = floorPositions.ElementAt(i);
+            Vector3Int floorPosition = floorPositions.ElementAt(i);
 
-            for (int j = 0; j < Direction2D.eightDirectionsList.Count; j++)
+            for (int j = 0; j < Direction3D.eightDirectionsList.Count; j++)
             {
-                Vector2Int possibleNewWallPosition = floorPosition + Direction2D.eightDirectionsList.ElementAt(j);
+                Vector3Int possibleNewWallPosition = floorPosition + Direction3D.eightDirectionsList.ElementAt(j);
                 if (floorPositions.Contains(possibleNewWallPosition) == false)  // don't create wall at floorTile
                 {
-                    HashSet<Vector2Int> tileCollisions = CheckNeighbourCollisions(floorPositions, possibleNewWallPosition);
+                    HashSet<Vector3Int> tileCollisions = CheckNeighbourCollisions(floorPositions, possibleNewWallPosition);
                     WallType wallType = ConvertCollisionsToWallType(tileCollisions);
                     if (wallType != WallType.NONE)
                     {
-                        allWalls.Add(new Vector2WithWallType(possibleNewWallPosition, wallType));
+                        allWalls.Add(new Vector3WithWallType(possibleNewWallPosition, wallType));
                     }
                 }
             }
@@ -53,13 +53,13 @@ public class WallGenerator : MonoBehaviour
         return allWalls;
     }
 
-    private static HashSet<Vector2Int> CheckNeighbourCollisions(HashSet<Vector2Int> floorPositions, Vector2Int possibleWallPosition)
+    private static HashSet<Vector3Int> CheckNeighbourCollisions(HashSet<Vector3Int> floorPositions, Vector3Int possibleWallPosition)
     {
-        HashSet<Vector2Int> collisions = new HashSet<Vector2Int>();
-        for (int i = 0; i < Direction2D.eightDirectionsList.Count; i++)
+        HashSet<Vector3Int> collisions = new();
+        for (int i = 0; i < Direction3D.eightDirectionsList.Count; i++)
         {
-            Vector2Int direction = Direction2D.eightDirectionsList.ElementAt(i);
-            Vector2Int possibleFloorPosition = possibleWallPosition + direction;
+            Vector3Int direction = Direction3D.eightDirectionsList.ElementAt(i);
+            Vector3Int possibleFloorPosition = possibleWallPosition + direction;
 
             if (floorPositions.Contains(possibleFloorPosition) == true)
             {
@@ -71,7 +71,7 @@ public class WallGenerator : MonoBehaviour
     }
 
 
-    private static WallType ConvertCollisionsToWallType(HashSet<Vector2Int> collisions)
+    private static WallType ConvertCollisionsToWallType(HashSet<Vector3Int> collisions)
     {
         // Get all values of the WallType enum
         WallType[] wallTypesArray = (WallType[])Enum.GetValues(typeof(WallType));
@@ -79,7 +79,7 @@ public class WallGenerator : MonoBehaviour
         // Iterate through each enum value
         foreach (WallType wallType in wallTypesArray)
         {
-            List<Vector2Int>[] allowedFloorCollisions = WallConstants.GetAllowedFloorCollisions(wallType);
+            List<Vector3Int>[] allowedFloorCollisions = WallConstants.GetAllowedFloorCollisions(wallType);
             foreach (var item in allowedFloorCollisions)
             {
                 if (collisions.SetEquals(item) == true) // Compares if both sets contain the exact same element
@@ -88,6 +88,7 @@ public class WallGenerator : MonoBehaviour
                 }
             }
         }
+        Debug.Log("Wall none");
 
         // if no match was found, no wall should be there
         return WallType.NONE;
