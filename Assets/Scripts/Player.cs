@@ -80,7 +80,9 @@ public class Player : MonoBehaviour
     {
         // 3D
         Vector3 mousePosition = MousePosition.instance.GetMousePositionFromRotatedCamera();
-        transform.LookAt(mousePosition);
+
+        // transform.position.y so it doesnt angle forward
+        transform.LookAt(new Vector3(mousePosition.x, transform.position.y, mousePosition.z));
     }
 
     private bool IsRunning()
